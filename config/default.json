@@ -1,0 +1,64 @@
+{
+    "application": {
+        "name": "OpenClaw Enterprise Gateway",
+        "version": "0.1.0",
+        "environment": "default"
+    },
+    "server": {
+        "port": 3000,
+        "host": "0.0.0.0"
+    },
+    "logging": {
+        "level": "info",
+        "format": "json",
+        "filePath": "./logs/openclaw.log",
+        "maxSize": "10m",
+        "maxFiles": 10
+    },
+    "gateway": {
+        "manager": {
+            "maxConcurrentTasks": 10,
+            "taskTimeout": 300000
+        },
+        "builderPool": {
+            "minSize": 2,
+            "maxSize": 10,
+            "idleTimeout": 600000
+        },
+        "heartbeat": {
+            "interval": 30000,
+            "alertThreshold": 3
+        }
+    },
+    "storage": {
+        "thoughtSignatures": {
+            "path": "./storage/thought-signatures"
+        },
+        "taskHistory": {
+            "path": "./storage/task-history"
+        },
+        "auditLog": {
+            "path": "./storage/audit-logs"
+        }
+    },
+    "redis": {
+        "host": "localhost",
+        "port": 6379,
+        "db": 0
+    },
+    "security": {
+        "jwtExpiration": "24h",
+        "rateLimit": {
+            "windowMs": 900000,
+            "maxRequests": 100
+        }
+    },
+    "webUI": {
+        "enabled": true,
+        "corsOrigin": "http://localhost:3000"
+    },
+    "metrics": {
+        "enabled": true,
+        "port": 9090
+    }
+}

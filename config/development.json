@@ -1,0 +1,16 @@
+{
+    "application": {
+        "environment": "development"
+    },
+    "logging": {
+        "level": "debug"
+    },
+    "gateway": {
+        "manager": {
+            "maxConcurrentTasks": 5
+        }
+    },
+    "webUI": {
+        "corsOrigin": "*"
+    }
+}

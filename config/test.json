@@ -1,0 +1,29 @@
+{
+    "application": {
+        "environment": "test"
+    },
+    "logging": {
+        "level": "error"
+    },
+    "gateway": {
+        "manager": {
+            "maxConcurrentTasks": 2,
+            "taskTimeout": 5000
+        },
+        "builderPool": {
+            "minSize": 1,
+            "maxSize": 2
+        }
+    },
+    "storage": {
+        "thoughtSignatures": {
+            "path": "./tests/.tmp/thought-signatures"
+        },
+        "taskHistory": {
+            "path": "./tests/.tmp/task-history"
+        },
+        "auditLog": {
+            "path": "./tests/.tmp/audit-logs"
+        }
+    }
+}

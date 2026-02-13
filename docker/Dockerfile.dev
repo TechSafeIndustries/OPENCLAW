@@ -1,0 +1,28 @@
+# Development Dockerfile for OpenClaw Enterprise Gateway
+FROM node:20-alpine
+
+# Install development tools
+RUN apk add --no-cache \
+    git \
+    bash \
+    vim
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json package-lock.json* ./
+
+# Install all dependencies (including dev)
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p storage/thought-signatures storage/task-history storage/audit-logs logs
+
+# Expose ports
+EXPOSE 3000 9090 9229
+
+# Development mode with hot reload
+CMD ["npm", "run", "dev"]

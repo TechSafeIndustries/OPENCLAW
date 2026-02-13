@@ -1,0 +1,17 @@
+{
+    "application": {
+        "environment": "production"
+    },
+    "logging": {
+        "level": "warn"
+    },
+    "gateway": {
+        "manager": {
+            "maxConcurrentTasks": 20
+        },
+        "builderPool": {
+            "minSize": 5,
+            "maxSize": 20
+        }
+    }
+}

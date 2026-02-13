@@ -1,0 +1,102 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Secrets and credentials
+*.pem
+*.key
+*.cert
+secrets/
+.secrets/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS files
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Cache
+.cache/
+.eslintcache
+.prettierchache
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Distribution
+dist-ssr/
+*.local
+
+# Storage (Thought Signatures - local dev only)
+storage/thought-signatures/*.json
+storage/task-history/*.json
+
+# MCP cache
+.mcp-cache/
+
+# PM2
+.pm2/
+
+# Optional: local configuration overrides
+config/local.json
+config/development.local.json
+
+# Artifacts (keep in repo but ignore user-specific ones)
+.artifacts/*.local.md
