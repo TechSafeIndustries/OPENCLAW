@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: openclaw-gateway
+    env_file: .env
+    volumes:
+      - /mnt/c/Users/mikes/openclaw-final/openclaw-auth.json:/app/openclaw-auth.json
+    restart: unless-stopped
+
+  redis:
+    image: redis:6.2-alpine
+    container_name: openclaw-redis
+    ports:
+      - "6379:6379"
