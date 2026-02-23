@@ -1,0 +1,20 @@
+{
+    "request_id": "req_governance_triage_001",
+    "ts": "2026-02-23T05:27:00.000Z",
+    "initiator": "system",
+    "user_goal": "Audit and triage the oldest pending governance item. Review outstanding decisions and produce a structured summary of what requires operator attention.",
+    "constraints": {
+        "no_public_exposure": true,
+        "structured_outputs_only": true,
+        "on_demand_only": true,
+        "additional": []
+    },
+    "risk_flags": {
+        "external_comms": false
+    },
+    "context": {
+        "audience": "internal_ops",
+        "channel": "governance_triage",
+        "source": "workflow_governance_triage_v1"
+    }
+}

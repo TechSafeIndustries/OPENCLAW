@@ -111,3 +111,6 @@ db/*.shm
 # Python (if any governance scripts added later)
 __pycache__/
 .venv/
+
+# Runtime-generated request files (written by workflow scripts, not source)
+requests/_runtime/

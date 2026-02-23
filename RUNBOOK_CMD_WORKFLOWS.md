@@ -7,6 +7,7 @@
 > | `workflow:runbook-check` | **Run this first** — preflight: ledger + Kimi ping + env sanity | §0 |
 > | `workflow:founder-sales-draft` | Founder sales draft (SALES_INTERNAL → sales agent) | §1 |
 > | `workflow:founder-marketing-draft` | Founder marketing draft (MARKETING_INTERNAL → marketing_pr agent) | §5 |
+> | `workflow:governance-triage` | **Execution loop** — pop oldest TODO, run OpenClaw, retrieve artefact | §6 |
 
 > **⚠️ SHELL WARNING — Read first**
 >
@@ -358,3 +359,123 @@ If stub tasks accumulate, purge them:
 ```cmd
 npm run tasks:purge-stub -- NEW_SESSION_ID --owner cos
 ```
+
+---
+
+## 6. Governance Triage Workflow
+
+> **Command:** `npm run workflow:governance-triage`
+>
+> This is the **execution** workflow (not draft-only). It pops the oldest real TODO task, runs OpenClaw to produce an artefact, and preserves the full audit trail.
+
+### When to use
+
+- You have accumulated TODO tasks (from `tasks:list`) that need to be worked
+- You want to advance the governance queue without manually identifying which task to do next
+- Routine operational triage of outstanding governance items
+
+### Prerequisites
+
+1. Run preflight first: `npm run workflow:runbook-check` — must be `ok:true`
+2. Non-stub TODO tasks must exist: `npm run tasks:oldest -- --no-stub`
+
+### Command forms
+
+```cmd
+REM Standard triage — auto-creates session, pops oldest TODO
+npm run workflow:governance-triage
+
+REM With explicit owner (default: cos)
+npm run workflow:governance-triage -- --owner cos
+
+REM Dry-run — shows what WOULD be popped, no state changes
+npm run workflow:governance-triage -- --dry-run
+
+REM Operate within a specific session only
+npm run workflow:governance-triage -- --session sess_1234567890
+```
+
+### Flags
+
+| Flag | Default | Description |
+|---|---|---|
+| `--owner <agent>` | `cos` | Owner written to the popped task's `owner_agent` column |
+| `--session <id>` | auto | Use existing session; omit to create a new triage session via `openclaw:run` |
+| `--dry-run` | off | Steps 0–2 only (preflight + session + peek). No pops. No openclaw:run. Prints `would_pop_task`. |
+
+### Six-step flow
+
+```
+[0] Preflight     workflow:runbook-check               exit 1 if ok:false
+[1] Session       openclaw:run governance_triage.json  creates triage session OR uses --session
+[2] Find work     tasks:oldest --no-stub               peek: oldest non-stub TODO across all sessions
+                                                        → if null: output ok:true,task:null, stop
+[3] Pop           tasks:next <session> --no-stub        todo → doing, writes 2 action rows (ATOMIC)
+[4] Execute       openclaw:run <runtime_request>        writes temp JSON to requests/_runtime/ (gitignored)
+                                                         deletes temp file immediately after run
+[5] Retrieve      artifacts:latest <session> --no-stub  1 retry (1000ms Atomics.wait) if null
+[6] Output        consolidated JSON
+```
+
+> **Note on session scoping:** The `work_session_id` is taken from the **task's own session**, not from the triage init session. This ensures `tasks:next` pops correctly and all artefacts link to the right session.
+
+### Output shape
+
+```json
+{
+  "ok": true,
+  "owner": "cos",
+  "session_id": "<task_session>",
+  "triage_session_id": "<triage_init_session>",
+  "task": { "id": "...", "title": "...", "status": "doing", ... },
+  "task_audit": {
+    "task_update_action_id": "task_update_...",
+    "task_next_action_id":   "task_next_..."
+  },
+  "run": {
+    "status": "OK",
+    "run_id": "...",
+    "intent": "GOVERNANCE_REVIEW",
+    "dispatch_state": "GATED | DISPATCHED | BLOCKED",
+    "agent": "governance",
+    "artifact_id": "..."
+  },
+  "artifact": { ... } | null,
+  "artifact_attempts": 1 | 2,
+  "artifact_retry_used": true | false,
+  "artifact_retry_delay_ms": 1000,
+  "notes": [ ... ]
+}
+```
+
+**Empty queue output** (`task: null`):
+```json
+{ "ok": true, "owner": "cos", "session_id": "...", "task": null, "run": null, "artifact": null, "artifact_attempts": 0, "notes": [...] }
+```
+
+### Audit trail confirms
+
+After a successful triage run, the following ledger writes occur (all via existing CLIs — the workflow does **not** write to DB directly):
+
+| CLI | Ledger writes |
+|---|---|
+| `openclaw:run` (init session) | `sessions`, `messages` (router I/O), `actions` (route, dispatch), `decisions` |
+| `tasks:next` | `tasks` (status `todo → doing`), 2 × `actions` (`task_update`, `task_next`) — single atomic txn |
+| `openclaw:run` (task exec) | `sessions`, `messages`, `actions` (dispatch), `artifacts` (if Kimi call succeeds) |
+
+Verify audit trail after a run:
+```cmd
+npm run decisions:list -- TRIAGE_SESSION_ID
+npm run tasks:list -- WORK_SESSION_ID --status doing
+```
+
+### Failure modes
+
+| Failure | Step | Behaviour |
+|---|---|---|
+| Preflight fails | `preflight` | Hard exit 1 — fix environment first |
+| Init session dispatch fails | `triage_session_init` | Hard exit 1 (`EXIT_CODE_*` or JSON parse error) |
+| No non-stub TODO found | step 2 | `ok:true, task:null` — not an error |
+| Task claimed between peek and pop | step 3 | `ok:true, task:null` — safe, retry triage next cycle |
+| Kimi auth missing in child env | `openclaw_run_task` | Hard exit 1 — ensure `MOONSHOT_API_KEY` is set (`.env` must exist) |
+| Artefact null after 2 attempts | step 5 | `ok:true, artifact:null` — task was popped, run registered; artefact accessible via `artifacts:latest SESSION_ID` |
