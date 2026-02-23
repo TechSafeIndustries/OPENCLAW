@@ -308,9 +308,10 @@ if (!candidateTask) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 2a: STOP-LOSS THRESHOLD GATE — refuse re-execution of already-failed tasks
+// Exception: stop_loss_retry_approved=true means human-review has cleared it
 // ─────────────────────────────────────────────────────────────────────────────
 const candidateMeta = candidateTask.meta || {};
-if (candidateMeta.stop_loss_triggered === true) {
+if (candidateMeta.stop_loss_triggered === true && candidateMeta.stop_loss_retry_approved !== true) {
     process.stdout.write(JSON.stringify({
         ok: false,
         step: 'stop_loss_threshold_gate',
@@ -329,11 +330,12 @@ if (candidateMeta.stop_loss_triggered === true) {
         next_action: 'human_review_required',
         notes: [
             'Task has stop_loss_triggered=true — triage refuses to re-execute automatically',
-            'A human operator must review the task, clear the stop-loss flag, and re-queue',
-            'To clear: manually update task meta_json.stop_loss_triggered=false and set status=todo',
+            'A human operator must review the task and approve retry via workflow:human-review',
+            `Run: npm run workflow:human-review -- ${candidateTask.id} --decision retry --reason "<reason>" --owner cos`,
+            'Or: npm run workflow:human-review -- <id> --decision close|reject --reason "<reason>"',
         ],
     }, null, 2) + '\n');
-    process.exit(0);   // exit 0 — this is an expected operational outcome not a crash
+    process.exit(0);   // exit 0 — expected operational outcome, not a crash
 }
 
 const workSessionId = candidateTask.session_id;

@@ -10,6 +10,7 @@
 > | `workflow:governance-triage` | **Execution loop** — pop oldest TODO, run OpenClaw, retrieve artefact | §6 |
 > | `workflow:task-close` | **Close loop** — transition doing → done, write task_close audit action | §7 |
 > | `tasks:stop-loss` | **Stop-loss CLI** — mark task blocked, write stop_loss audit action | §8 |
+> | `workflow:human-review` | **Human review** — governance override: review → retry\|close\|reject a stop-lossed task | §9 |
 
 > **⚠️ SHELL WARNING — Read first**
 >
@@ -731,3 +732,141 @@ workflow:task-close <id>     → close doing → done, write task_close audit
 - `ok:false` in output signals stop-loss, not a CLI error.
 - Stop-loss CLI is **idempotent-guarded** — cannot double-trigger (`ALREADY_TRIGGERED` guard).
 - All writes via `tasks_stop_loss_cli_v1.js` — no direct DB writes in workflow layer.
+- **Threshold gate bypass**: triage allows re-execution if `stop_loss_retry_approved=true` (set by `workflow:human-review`).
+
+---
+
+## 9. Human Review Workflow
+
+> **The governance override point.** A human operator reviewed a stop-lossed task and
+> decides to retry, close, or reject it. This is the ONLY authorised path to re-queue
+> or permanently close a blocked task. No automatic retries.
+
+### Command
+
+```cmd
+npm run workflow:human-review -- <task_id>
+  --decision  retry|close|reject     (required)
+  --reason    "<text>"               (required, max 240 chars)
+  [--owner    <agent>]               (default: cos)
+  [--artifact <artifact_id>]         (link to artifact; used by close)
+  [--session  <session_id>]          (override session; else inferred from task)
+  [--dry-run]                        (steps 1–4 only, no DB writes)
+```
+
+### Prerequisites
+
+- Task must have `status=blocked` AND `meta_json.stop_loss_triggered=true`
+- If not, workflow returns `ok:false, error=NOT_STOP_LOSS_BLOCKED`
+
+### Flags
+
+| Flag | Required | Default | Description |
+|---|---|---|---|
+| `<task_id>` | ✅ | — | Task to review |
+| `--decision <d>` | ✅ | — | `retry`, `close`, or `reject` |
+| `--reason <text>` | ✅ | — | Human rationale (max 240 chars) |
+| `--owner <agent>` | — | `cos` | Reviewing operator |
+| `--artifact <id>` | — | `null` | Link an artifact to the decision (optional) |
+| `--session <id>` | — | inferred | Override session for audit rows |
+| `--dry-run` | — | false | Show plan without writing; exits after step 3 |
+
+### Decision Paths
+
+| Decision | Status transition | Extra meta fields | Action type | next_action |
+|---|---|---|---|---|
+| `retry` | `blocked → todo` | `stop_loss_retry_approved=true`, `_by`, `_at`, `_reason` | `human_review_retry` | `run triage again` |
+| `close` | `blocked → done` | `review_closed=true`, `close_reason`, `closed_by`, `closed_at` | `human_review_close` | `no further automation` |
+| `reject` | `blocked` (unchanged) | `review_rejected=true`, `_by`, `_at`, `_reason` | `human_review_reject` | `no further automation` |
+
+### Audit Trail
+
+| Decision | Writes |
+|---|---|
+| `retry` | `decisions` table row (approve:override, intent=HUMAN_REVIEW_RETRY) + `actions` row type=`approve_override` + `actions` row type=`human_review_retry` |
+| `close` | `actions` row type=`human_review_close` |
+| `reject` | `actions` row type=`human_review_reject` |
+
+All writes are **atomic** (single DB transaction per decision) via `tasks_review_update_cli_v1.js`.
+
+### Idempotency Guards
+
+| Decision | Guard condition | Error code |
+|---|---|---|
+| `retry` | `meta.stop_loss_retry_approved=true` | `ALREADY_APPROVED_FOR_RETRY` |
+| `close` | `task.status=done` | `ALREADY_CLOSED` |
+| `reject` | `meta.review_rejected=true` | `ALREADY_REJECTED` |
+
+### Output shapes
+
+**Dry-run:**
+```json
+{ "ok": true, "dry_run": true, "task_id": "...",
+  "review": { "task": {...}, "stop_loss": {...}, "latest_artifact": {...}, "proposed_decision": {...} },
+  "would_do": ["1. Write approve:override ...", "2. tasks:review-update ...", ...],
+  "notes": ["Dry-run exits after step 3 ..."] }
+```
+
+**Retry applied:**
+```json
+{ "ok": true, "task_id": "...", "decision": "retry",
+  "override": { "decision_id": "decision_<ts>", "intent": "HUMAN_REVIEW_RETRY", "approved_by": "cos" },
+  "apply": { "ok": true, "action_id": "human_review_retry_<ts>", ... },
+  "next_action": "run triage again",
+  "next_command": "npm run workflow:governance-triage -- --session <session_id>" }
+```
+
+**Close applied:**
+```json
+{ "ok": true, "task_id": "...", "decision": "close",
+  "apply": { "ok": true, "action_id": "human_review_close_<ts>", ... },
+  "next_action": "no further automation" }
+```
+
+**Reject applied:**
+```json
+{ "ok": true, "task_id": "...", "decision": "reject",
+  "apply": { "ok": true, "action_id": "human_review_reject_<ts>", ... },
+  "next_action": "no further automation" }
+```
+
+### After retry: re-run triage
+
+When `decision=retry` succeeds, the output includes `next_command`. The triage threshold gate
+will now allow the task through because `stop_loss_retry_approved=true`.
+
+```cmd
+REM Check the session_id in the retry output
+npm run workflow:governance-triage -- --session <session_id>
+```
+
+> ⚠️ If triage triggers stop-loss again on the same task (same keyword block), the task
+> will be re-blocked. Another `workflow:human-review` run is required, but `retry` will
+> fail with `ALREADY_APPROVED_FOR_RETRY`. Use `close` or `reject` instead.
+
+### Full human review examples
+
+```cmd
+REM Dry-run first (always recommended)
+npm run workflow:human-review -- <task_id> --decision retry --reason "Reviewed, safe to retry" --dry-run
+
+REM Apply retry (logs override, re-queues as todo)
+npm run workflow:human-review -- <task_id> --decision retry --reason "Reviewed, safe to retry" --owner cos
+
+REM Then run triage with the session shown in the retry output
+npm run workflow:governance-triage -- --session <session_id>
+
+REM Close (marks done, no retry ever)
+npm run workflow:human-review -- <task_id> --decision close --reason "Task scope is no longer relevant" --owner cos
+
+REM Reject (marks permanently rejected — keeps blocked, no automation)
+npm run workflow:human-review -- <task_id> --decision reject --reason "Violates governance policy" --owner cos
+```
+
+### Invariants
+
+- Human review is **always explicit** — no automatic retries.
+- No direct DB writes in the workflow layer — all writes via `tasks_review_update_cli_v1.js`.
+- `workflow:task-close` is bypassed for the close path: it guards for `status=doing`; human-review close handles `blocked → done` directly via the review CLI.
+- Original stop-loss fields (`stop_loss_triggered`, `stop_loss_reason`, etc.) are **never deleted** — preserved as permanent audit history.
+- `approve_override_cli_v1.js` bug fix: the positional filter now correctly handles the absent `--run` flag (was filtering `args[0]` off-by-one).

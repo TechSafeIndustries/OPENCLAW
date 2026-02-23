@@ -30,8 +30,10 @@ const { approveOverride } = require('./approve_override_v1');
 const args = process.argv.slice(2);
 const runFlagIdx = args.indexOf('--run');
 const run_id = runFlagIdx !== -1 ? (args[runFlagIdx + 1] || null) : null;
-// Remove --run and its value from the positional args list
-const positional = args.filter((_, i) => i !== runFlagIdx && i !== runFlagIdx + 1);
+// Remove --run and its value from the positional args list (only when --run is present)
+const positional = runFlagIdx !== -1
+    ? args.filter((_, i) => i !== runFlagIdx && i !== runFlagIdx + 1)
+    : args.slice();
 
 if (positional.length < 4) {
     process.stdout.write(JSON.stringify({
