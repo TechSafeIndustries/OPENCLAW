@@ -1,0 +1,101 @@
+﻿{
+  "ok": false,
+  "dry_run": true,
+  "owner": "cos",
+  "preflight": {
+    "ok": true,
+    "checks": {
+      "ledger": {
+        "ok": true,
+        "summary": "OK: ledger verified"
+      },
+      "kimi": {
+        "ok": true,
+        "base_url": "https://api.moonshot.ai/v1",
+        "model": "kimi-k2-turbo-preview",
+        "test": "chat.completions.ping",
+        "usage": {
+          "prompt_tokens": 8,
+          "completion_tokens": 1,
+          "total_tokens": 9,
+          "cached_tokens": 8,
+          "prompt_tokens_details": {
+            "cached_tokens": 8
+          }
+        }
+      }
+    },
+    "env": {
+      "shell_hint": "PowerShell",
+      "cwd": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw",
+      "comspec": "C:\\WINDOWS\\system32\\cmd.exe",
+      "has_psmodulepath": true,
+      "kimi_base_url": null,
+      "kimi_model": null,
+      "api_key_present": true,
+      "api_key_prefix": "sk-",
+      "api_key_tail": "wYSQ"
+    }
+  },
+  "triage": {
+    "ok": true,
+    "dry_run": true,
+    "owner": "cos",
+    "session_id": "sess_1771842562711",
+    "session_from_arg": false,
+    "would_pop_task": {
+      "id": "task_po_smoke_1771841119002",
+      "session_id": "sess_policy_override_smoke_1771841119001",
+      "created_at": "2026-02-23T10:05:19.001Z",
+      "due_at": null,
+      "owner_agent": "cos",
+      "status": "todo",
+      "title": "Run SOP and send email to client with results",
+      "details": "Execute process checklist and send email notification to the client.",
+      "dependencies": [],
+      "meta": {
+        "intent": "OPS_INTERNAL",
+        "source": "smoke_policy_override",
+        "stop_loss_triggered": true,
+        "stop_loss_reason": "policy_gate: FORBIDDEN_PHRASE ΓÇö send email",
+        "stop_loss_failure_type": "policy_gate",
+        "stop_loss_at": "2026-02-23T10:05:19.001Z",
+        "stop_loss_owner": "cos",
+        "hil_required": true,
+        "policy_gate_triggered": true,
+        "policy_gate_phrase": "send email",
+        "policy_gate_policy": "FORBIDDEN_PHRASE",
+        "policy_gate_at": "2026-02-23T10:05:19.001Z",
+        "policy_gate_reason": "FORBIDDEN_PHRASE: send email",
+        "stop_loss_retry_approved": true,
+        "stop_loss_retry_reason": "Approved after review ΓÇö forbidden phrase was client notification SOP, reviewed and cleared",
+        "stop_loss_retry_by": "cos",
+        "stop_loss_retry_at": "2026-02-23T10:05:38.983Z",
+        "updated_at": "2026-02-23T10:05:38.983Z"
+      }
+    },
+    "candidate_stop_loss": {
+      "stop_loss_triggered": true,
+      "stop_loss_reason": "policy_gate: FORBIDDEN_PHRASE ΓÇö send email",
+      "stop_loss_at": "2026-02-23T10:05:19.001Z"
+    },
+    "would_execute": "BLOCKED ΓÇö stop_loss_triggered=true, human_review_required",
+    "notes": [
+      "Dry-run exits after step 2 (no state changes, no task pops)",
+      "--no-stub enforced on tasks:oldest",
+      "Stop-loss check shown but not enforced in dry-run (no pop occurs)",
+      "To execute: re-run without --dry-run"
+    ]
+  },
+  "next_action": "would_gate",
+  "task_id": "task_po_smoke_1771841119002",
+  "next_action_detail": {
+    "reason": "Dry-run: candidate task would be gated on live run (stop_loss or policy_gate) ΓÇö run human-review first",
+    "recommended_command": "npm run workflow:human-review -- task_po_smoke_1771841119002 --decision retry|close|reject --reason \"<your reason>\" --owner cos",
+    "decisions": [
+      "retry",
+      "close",
+      "reject"
+    ]
+  }
+}

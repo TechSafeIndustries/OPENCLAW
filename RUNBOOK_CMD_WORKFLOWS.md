@@ -15,6 +15,7 @@
 > | `workflow:policy-show` | **Policy Ops** — print current autonomy policy as JSON (read-only) | §11 |
 > | `workflow:policy-validate` | **Policy Ops** — deep-validate autonomy policy against locked enum + range checks (read-only) | §11 |
 > | `stack:check` | **Stack Check** — consolidated health check: runbook + policy + triage dry-run | §12 |
+> | `workflow:governance-loop` | **Governance Loop** — one command: preflight → triage → next action hint (never auto-closes) | §13 |
 
 > **⚠️ SHELL WARNING — Read first**
 >
@@ -1165,3 +1166,124 @@ npm run stack:check
 - No DB writes. Triage dry-run exits before popping any task.
 - Timeouts: runbook 90s (Kimi ping), policy 15s, triage dry-run 30s.
 - Run after any of: dep updates, policy edits, env changes, new CLIs wired in.
+
+---
+
+## 13. Governance Loop — One-Command Operator Loop
+
+> **The day-to-day operator command.** Runs the full loop in order:
+> `preflight → triage → classify outcome → tell you exactly what to do next.`
+> Human closes tasks. Human reviews gated tasks. This command never auto-closes anything.
+
+### Command
+
+```bash
+npm run workflow:governance-loop
+npm run workflow:governance-loop -- --owner cos
+npm run workflow:governance-loop -- --dry-run
+npm run workflow:governance-loop -- --owner cos --session <session_id>
+```
+
+### Flags
+
+| Flag | Default | Description |
+|---|---|---|
+| `--owner <agent>` | `cos` | Owner agent name for triage and review commands |
+| `--dry-run` | off | Run triage in dry-run mode — no task pops, no AI calls, no DB writes |
+| `--session <id>` | auto | Session ID override passed to triage |
+
+### Output shape
+
+Single JSON object on stdout. Always exits 0 for managed outcomes (including gated tasks).
+Exits 1 only on hard failures (preflight fail, spawn error).
+
+```json
+{
+  "ok": true|false,
+  "dry_run": true,           // present only when --dry-run passed
+  "owner": "cos",
+  "preflight": { ... },      // workflow:runbook-check result
+  "triage":   { ... },       // workflow:governance-triage result
+  "next_action": "...",      // see table below
+  "task_id": "...",          // present when a task was involved
+  "artifact_id": "...",      // present when triage produced an artifact
+  "gate_type": "...",        // present when next_action=human_review_required
+  "next_action_detail": {
+    "reason": "...",
+    "recommended_command": "npm run ...",
+    "decisions": ["retry","close","reject"]  // present for human_review states
+  }
+}
+```
+
+### `next_action` values
+
+| `next_action` | `ok` | Meaning | What to do |
+|---|---|---|---|
+| `no_work` | `true` | Queue empty — no non-stub TODO tasks | Nothing — queue is clear |
+| `close_task` | `true` | Task executed successfully | Review artifact, then run `workflow:task-close` |
+| `human_review_required` | `false` | Task gated (stop-loss or policy gate) | Run `workflow:human-review` with retry/close/reject |
+| `would_close_task` | `true` | (dry-run) Clean candidate found | Remove `--dry-run` to execute |
+| `would_gate` | `false` | (dry-run) Candidate would be gated | Run `workflow:human-review` first |
+| `check_errors` | `false` | Hard failure | Check `triage` field for details |
+
+### Examples
+
+**A. Queue is clear**
+```json
+{ "ok": true, "next_action": "no_work",
+  "next_action_detail": { "reason": "Queue is empty or no non-stub TODO tasks found", "recommended_command": null } }
+```
+
+**B. Task ran — close it**
+```json
+{ "ok": true, "next_action": "close_task", "task_id": "task_abc", "artifact_id": "art_xyz",
+  "next_action_detail": {
+    "reason": "Task executed successfully — review artifact then close",
+    "recommended_command": "npm run workflow:task-close -- task_abc --reason \"Task completed\" --owner cos --artifact art_xyz"
+  }
+}
+```
+Copy `recommended_command`, add your reason, run it.
+
+**C. Task gated (policy_gate or stop_loss)**
+```json
+{ "ok": false, "next_action": "human_review_required", "gate_type": "policy_gate", "task_id": "task_abc",
+  "next_action_detail": {
+    "reason": "POLICY_GATE: FORBIDDEN_PHRASE — send email",
+    "recommended_command": "npm run workflow:human-review -- task_abc --decision retry|close|reject --reason \"<your reason>\" --owner cos",
+    "decisions": ["retry", "close", "reject"]
+  }
+}
+```
+Replace `retry|close|reject` with one decision and add your reason.
+
+**D. Dry-run — candidate would be gated**
+```json
+{ "ok": false, "dry_run": true, "next_action": "would_gate", "task_id": "task_abc",
+  "next_action_detail": {
+    "reason": "Dry-run: candidate task would be gated on live run (stop_loss or policy_gate) — run human-review first",
+    "recommended_command": "npm run workflow:human-review -- task_abc --decision retry|close|reject ..."
+  }
+}
+```
+
+**E. Dry-run — clean candidate found**
+```json
+{ "ok": true, "dry_run": true, "next_action": "would_close_task", "task_id": "task_abc",
+  "next_action_detail": { "recommended_command": "npm run workflow:task-close -- task_abc ..." }
+}
+```
+Remove `--dry-run` and re-run to execute for real.
+
+### Smoke test results
+
+| Smoke | Input | `next_action` | Exit |
+|---|---|---|---|
+| A — dry-run gated task | Queue has stop_loss task | `would_gate` | 0 |
+| B — empty queue (unit) | Fake triage: no_work | `no_work` | 0 |
+| C — gated live (unit) | Fake triage: stop_loss | `human_review_required` | 0 |
+| D — policy gate (unit) | Fake triage: policy_gate | `human_review_required` | 0 |
+| E — success (unit) | Fake triage: ok+task_id | `close_task` | 0 |
+
+Run: `node scripts/smoke_governance_loop.js` (11/11 checks pass)
