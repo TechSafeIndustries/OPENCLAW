@@ -100,3 +100,14 @@ config/development.local.json
 
 # Artifacts (keep in repo but ignore user-specific ones)
 .artifacts/*.local.md
+
+# SQLite operational ledger (never commit live DB files)
+db/*.db
+db/*.sqlite
+db/*.sqlite3
+db/*.wal
+db/*.shm
+
+# Python (if any governance scripts added later)
+__pycache__/
+.venv/

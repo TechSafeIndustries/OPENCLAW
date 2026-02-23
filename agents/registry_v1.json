@@ -1,0 +1,310 @@
+{
+    "version": "v1.0",
+    "agents": [
+        {
+            "name": "cos",
+            "version": "v1.0",
+            "status": "active",
+            "purpose": "Router + planner. Converts user requests into deterministic intents, plans, and tasking. Produces structured outputs only.",
+            "priority": 100,
+            "scope": {
+                "allowed": [
+                    "routing",
+                    "planning",
+                    "tasking",
+                    "artifact_briefing"
+                ],
+                "excluded": [
+                    "external_comms",
+                    "public_endpoints",
+                    "infrastructure_scaling"
+                ]
+            },
+            "io_schema": {
+                "input_required": [
+                    "user_goal",
+                    "constraints",
+                    "context"
+                ],
+                "output_format": "STRUCTURED_JSON"
+            },
+            "policies": {
+                "hard_rules": [
+                    "Use controlled intent enum only",
+                    "No public exposure",
+                    "No infra expansion unless explicitly instructed",
+                    "Always log actions/decisions/artifacts"
+                ],
+                "gating_triggers": [
+                    "risk_high",
+                    "external_comms",
+                    "policy_change",
+                    "data_export"
+                ]
+            }
+        },
+        {
+            "name": "governance",
+            "version": "v1.0",
+            "status": "active",
+            "purpose": "Risk + control enforcement. Blocks unsafe actions, enforces governance-first architecture and logging discipline.",
+            "priority": 90,
+            "scope": {
+                "allowed": [
+                    "risk_review",
+                    "control_checks",
+                    "policy_enforcement",
+                    "approval_gates"
+                ],
+                "excluded": [
+                    "marketing_copy_final",
+                    "sales_outreach_final"
+                ]
+            },
+            "io_schema": {
+                "input_required": [
+                    "proposal",
+                    "risks",
+                    "controls",
+                    "data_handling"
+                ],
+                "output_format": "STRUCTURED_JSON"
+            },
+            "policies": {
+                "hard_rules": [
+                    "Block non-deterministic routing",
+                    "Block public endpoints and SaaS patterns",
+                    "Require human approval on external comms",
+                    "Require audit trail for decisions"
+                ],
+                "gating_triggers": [
+                    "external_comms",
+                    "security_change",
+                    "policy_change",
+                    "client_data"
+                ]
+            }
+        },
+        {
+            "name": "sales",
+            "version": "v1.0",
+            "status": "active",
+            "purpose": "Sales planning and internal sales ops outputs (scripts, qualification, pipeline notes). No direct outreach without approval.",
+            "priority": 70,
+            "scope": {
+                "allowed": [
+                    "sales_strategy",
+                    "pipeline",
+                    "qualification",
+                    "internal_scripts"
+                ],
+                "excluded": [
+                    "send_email",
+                    "send_sms",
+                    "public_posts"
+                ]
+            },
+            "io_schema": {
+                "input_required": [
+                    "offer",
+                    "target_market",
+                    "constraints"
+                ],
+                "output_format": "STRUCTURED_JSON"
+            },
+            "policies": {
+                "hard_rules": [
+                    "No outbound comms without approval",
+                    "No promises of capability not logged/validated"
+                ],
+                "gating_triggers": [
+                    "external_comms"
+                ]
+            }
+        },
+        {
+            "name": "marketing_pr",
+            "version": "v1.0",
+            "status": "active",
+            "purpose": "Internal marketing/PR planning outputs (positioning, content plans). No publishing without approval.",
+            "priority": 60,
+            "scope": {
+                "allowed": [
+                    "positioning",
+                    "content_plan",
+                    "pr_angles",
+                    "brand_alignment_checks"
+                ],
+                "excluded": [
+                    "publish_post",
+                    "public_endpoints"
+                ]
+            },
+            "io_schema": {
+                "input_required": [
+                    "brand_rules",
+                    "audience",
+                    "message"
+                ],
+                "output_format": "STRUCTURED_JSON"
+            },
+            "policies": {
+                "hard_rules": [
+                    "No public publishing without approval",
+                    "Must align to TechSafe governance-first posture"
+                ],
+                "gating_triggers": [
+                    "external_comms"
+                ]
+            }
+        },
+        {
+            "name": "product_offer",
+            "version": "v1.0",
+            "status": "active",
+            "purpose": "Product/offer design outputs (scope, pricing logic, packaging). No architecture changes unless requested.",
+            "priority": 80,
+            "scope": {
+                "allowed": [
+                    "offer_design",
+                    "requirements",
+                    "roadmap",
+                    "packaging"
+                ],
+                "excluded": [
+                    "infra_scaling",
+                    "public_gateway"
+                ]
+            },
+            "io_schema": {
+                "input_required": [
+                    "goal",
+                    "constraints",
+                    "current_state"
+                ],
+                "output_format": "STRUCTURED_JSON"
+            },
+            "policies": {
+                "hard_rules": [
+                    "No SaaS gateway patterns",
+                    "No infra expansion unless explicitly instructed"
+                ],
+                "gating_triggers": [
+                    "architecture_change"
+                ]
+            }
+        },
+        {
+            "name": "ops",
+            "version": "v1.0",
+            "status": "active",
+            "purpose": "Internal ops outputs (SOPs, checklists, execution plans). No system commands in v1 unless explicitly instructed.",
+            "priority": 50,
+            "scope": {
+                "allowed": [
+                    "sops",
+                    "checklists",
+                    "execution_plans",
+                    "internal_controls"
+                ],
+                "excluded": [
+                    "run_commands",
+                    "deployments"
+                ]
+            },
+            "io_schema": {
+                "input_required": [
+                    "process_goal",
+                    "constraints"
+                ],
+                "output_format": "STRUCTURED_JSON"
+            },
+            "policies": {
+                "hard_rules": [
+                    "No deployments or system changes without explicit instruction"
+                ],
+                "gating_triggers": [
+                    "security_change",
+                    "deployment"
+                ]
+            }
+        }
+    ],
+    "routing_rules": [
+        {
+            "intent": "GOVERNANCE_REVIEW",
+            "primary_agent": "governance",
+            "secondary_agents": [
+                "cos"
+            ],
+            "requires_governance_review": true,
+            "constraints": [
+                "structured_outputs_only"
+            ]
+        },
+        {
+            "intent": "PLAN_WORK",
+            "primary_agent": "cos",
+            "secondary_agents": [
+                "governance"
+            ],
+            "requires_governance_review": false,
+            "constraints": [
+                "deterministic_intents_only",
+                "structured_outputs_only"
+            ]
+        },
+        {
+            "intent": "SALES_INTERNAL",
+            "primary_agent": "sales",
+            "secondary_agents": [
+                "governance",
+                "cos"
+            ],
+            "requires_governance_review": true,
+            "constraints": [
+                "no_outbound_without_approval",
+                "structured_outputs_only"
+            ]
+        },
+        {
+            "intent": "MARKETING_INTERNAL",
+            "primary_agent": "marketing_pr",
+            "secondary_agents": [
+                "governance",
+                "cos"
+            ],
+            "requires_governance_review": true,
+            "constraints": [
+                "no_publish_without_approval",
+                "structured_outputs_only"
+            ]
+        },
+        {
+            "intent": "PRODUCT_OFFER",
+            "primary_agent": "product_offer",
+            "secondary_agents": [
+                "governance",
+                "cos"
+            ],
+            "requires_governance_review": true,
+            "constraints": [
+                "no_arch_changes_unless_requested",
+                "structured_outputs_only"
+            ]
+        },
+        {
+            "intent": "OPS_INTERNAL",
+            "primary_agent": "ops",
+            "secondary_agents": [
+                "governance",
+                "cos"
+            ],
+            "requires_governance_review": true,
+            "constraints": [
+                "no_deployments_unless_requested",
+                "structured_outputs_only"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "request_id": "req_marketing_draft_001",
+    "ts": "2026-02-23T03:30:00.000Z",
+    "initiator": "user",
+    "user_goal": "Draft a LinkedIn post and a short email follow-up as a content campaign for TechSafeAI internal positioning. Messaging should focus on governance-first AI for industrial operators. Internal draft only — no external publishing, no sending.",
+    "constraints": {
+        "no_public_exposure": true,
+        "structured_outputs_only": true,
+        "on_demand_only": true,
+        "additional": []
+    },
+    "risk_flags": {
+        "external_comms": true
+    },
+    "context": {
+        "audience": "internal_review",
+        "channel": "draft_only",
+        "product": "TechSafeAI"
+    }
+}

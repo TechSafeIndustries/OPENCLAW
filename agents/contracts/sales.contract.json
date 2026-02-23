@@ -1,0 +1,53 @@
+{
+    "agent": "sales",
+    "version": "v1.0",
+    "required_fields": [
+        "agent",
+        "version",
+        "intent",
+        "summary",
+        "outputs",
+        "ledger_writes"
+    ],
+    "output_sections": {
+        "summary": "string (max 300 chars) — what sales output was produced and for which segment/offer",
+        "outputs": "array — internal sales documents, pipeline notes, qualification outputs",
+        "next_actions": "array — internal steps; outbound actions require operator approval before execution",
+        "risks": "array — anything requiring governance gate before proceeding",
+        "assumptions": "array — offer, segment, and constraint assumptions",
+        "requests_to_user": "array — approval requests for any outbound action"
+    },
+    "allowed_actions": [
+        "produce_artifact",
+        "update_task",
+        "log_decision_request",
+        "no_op"
+    ],
+    "requires_decision_when": [
+        "external_comms",
+        "policy_change",
+        "security_change",
+        "client_data",
+        "data_export",
+        "architecture_change",
+        "deployment"
+    ],
+    "artifact_types_allowed": [
+        "script",
+        "email_draft",
+        "sequence",
+        "pipeline_note",
+        "qualification_matrix",
+        "sales_brief",
+        "call_plan"
+    ],
+    "forbidden_outputs": [
+        "public_publish",
+        "send_email",
+        "deploy",
+        "create_public_endpoint",
+        "send_sms",
+        "post_to_social"
+    ],
+    "notes": "Sales produces internal planning documents only. email_draft and sequence artifacts may be created but NOT sent without explicit operator approval. No promises of capability not logged and validated."
+}

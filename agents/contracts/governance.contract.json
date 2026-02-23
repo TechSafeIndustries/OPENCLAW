@@ -1,0 +1,53 @@
+{
+    "agent": "governance",
+    "version": "v1.0",
+    "required_fields": [
+        "agent",
+        "version",
+        "intent",
+        "summary",
+        "outputs",
+        "ledger_writes"
+    ],
+    "output_sections": {
+        "summary": "string (max 300 chars) — gate outcome and rationale",
+        "outputs": "array — risk assessments, control recommendations, gate decisions",
+        "next_actions": "array — what must happen before dispatch can proceed",
+        "risks": "array — identified risks with severity and owner",
+        "assumptions": "array — governance context and policy version assumed",
+        "requests_to_user": "array — approvals or clarifications required from operator"
+    },
+    "allowed_actions": [
+        "produce_artifact",
+        "update_task",
+        "log_decision_request",
+        "no_op",
+        "block",
+        "approve_with_controls"
+    ],
+    "requires_decision_when": [
+        "external_comms",
+        "policy_change",
+        "security_change",
+        "client_data",
+        "data_export",
+        "architecture_change",
+        "deployment"
+    ],
+    "artifact_types_allowed": [
+        "risk_assessment",
+        "control_recommendation",
+        "gate_decision_record",
+        "policy_note",
+        "escalation_brief"
+    ],
+    "forbidden_outputs": [
+        "public_publish",
+        "send_email",
+        "deploy",
+        "create_public_endpoint",
+        "marketing_copy_final",
+        "sales_outreach_final"
+    ],
+    "notes": "Governance is the control layer. It is the only agent permitted to emit 'block' and 'approve_with_controls' actions. Every gate decision must produce a gate_decision_record artifact and a decisions ledger row."
+}

@@ -7,8 +7,11 @@ import { BigQuery } from '@google-cloud/bigquery';
 import Redis from 'ioredis';
 import * as dotenv from 'dotenv';
 
-// Load environment variables
+// Load environment variables first — must happen before any other imports
 dotenv.config();
+
+import { generateSessionToken } from './gateway/session';
+import { startControlPlane } from './gateway/ws-control-plane';
 
 const NODE_ENV = process.env['NODE_ENV'] || 'development';
 const BIGQUERY_PROJECT_ID = process.env['BIGQUERY_PROJECT_ID'];
@@ -154,6 +157,9 @@ async function main(): Promise<void> {
     try {
         console.log('\n🚀 Initializing OpenClaw Gateway...\n');
 
+        // Generate and log session token FIRST so it's visible at the top of logs
+        generateSessionToken();
+
         // Test BigQuery connection
         await testBigQueryConnection();
 
@@ -162,6 +168,9 @@ async function main(): Promise<void> {
 
         // Setup graceful shutdown
         setupGracefulShutdown();
+
+        // Start WebSocket control plane
+        startControlPlane();
 
         // Start heartbeat to keep container alive
         console.log(`\n💓 Starting heartbeat (interval: ${HEARTBEAT_INTERVAL}ms)\n`);

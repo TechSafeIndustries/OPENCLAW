@@ -1,0 +1,13 @@
+{
+  "request_id": "d0f69b94-0c55-4e41-a5b2-a07e6fcdcd73",
+  "ts": "2026-02-22T08:53:08.460Z",
+  "initiator": "user",
+  "user_goal": "Plan and task out Q1 roadmap for the product team.",
+  "constraints": {
+    "no_public_exposure": true,
+    "structured_outputs_only": true,
+    "on_demand_only": true,
+    "additional": []
+  },
+  "context": {}
+}

@@ -1,0 +1,49 @@
+{
+    "agent": "cos",
+    "version": "v1.0",
+    "required_fields": [
+        "agent",
+        "version",
+        "intent",
+        "summary",
+        "outputs",
+        "ledger_writes"
+    ],
+    "output_sections": {
+        "summary": "string (max 300 chars) — what the CoS agent did and why",
+        "outputs": "array — structured plan/task/brief objects produced",
+        "next_actions": "array — what agent or human should do next",
+        "risks": "array — anything that triggered a flag or requires attention",
+        "assumptions": "array — constraints or context assumed when processing",
+        "requests_to_user": "array — items requiring user decision or input"
+    },
+    "allowed_actions": [
+        "produce_artifact",
+        "update_task",
+        "log_decision_request",
+        "no_op"
+    ],
+    "requires_decision_when": [
+        "external_comms",
+        "policy_change",
+        "security_change",
+        "client_data",
+        "data_export",
+        "architecture_change",
+        "deployment"
+    ],
+    "artifact_types_allowed": [
+        "plan",
+        "task_list",
+        "brief",
+        "routing_decision",
+        "session_summary"
+    ],
+    "forbidden_outputs": [
+        "public_publish",
+        "send_email",
+        "deploy",
+        "create_public_endpoint"
+    ],
+    "notes": "CoS is the orchestrator. It routes, plans, and tasks. It does not produce domain content (sales copy, marketing text, etc). All outputs are structured JSON only."
+}

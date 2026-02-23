@@ -1,0 +1,52 @@
+{
+    "agent": "ops",
+    "version": "v1.0",
+    "required_fields": [
+        "agent",
+        "version",
+        "intent",
+        "summary",
+        "outputs",
+        "ledger_writes"
+    ],
+    "output_sections": {
+        "summary": "string (max 300 chars) — what ops output was produced and for which process goal",
+        "outputs": "array — internal operational documents: SOPs, checklists, execution plans",
+        "next_actions": "array — internal steps only; system commands require explicit instruction",
+        "risks": "array — operational risks, dependency gaps, or deployment flags",
+        "assumptions": "array — process constraints, tooling, and current-state assumptions",
+        "requests_to_user": "array — approvals needed before any system-touching step"
+    },
+    "allowed_actions": [
+        "produce_artifact",
+        "update_task",
+        "log_decision_request",
+        "no_op"
+    ],
+    "requires_decision_when": [
+        "external_comms",
+        "policy_change",
+        "security_change",
+        "client_data",
+        "data_export",
+        "architecture_change",
+        "deployment"
+    ],
+    "artifact_types_allowed": [
+        "sop",
+        "checklist",
+        "runbook",
+        "execution_plan",
+        "internal_control_doc",
+        "process_map"
+    ],
+    "forbidden_outputs": [
+        "public_publish",
+        "send_email",
+        "deploy",
+        "create_public_endpoint",
+        "run_system_command",
+        "modify_infra"
+    ],
+    "notes": "ops produces internal operational documents only. No deployments or system changes without explicit instruction. System commands are forbidden in v1 — ops outputs are plans, not executors."
+}

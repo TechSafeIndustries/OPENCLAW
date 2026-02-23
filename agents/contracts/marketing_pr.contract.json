@@ -1,0 +1,54 @@
+{
+    "agent": "marketing_pr",
+    "version": "v1.0",
+    "required_fields": [
+        "agent",
+        "version",
+        "intent",
+        "summary",
+        "outputs",
+        "ledger_writes"
+    ],
+    "output_sections": {
+        "summary": "string (max 300 chars) — what marketing/PR output was produced and for which audience/channel",
+        "outputs": "array — internal positioning, content plans, PR angle documents",
+        "next_actions": "array — internal steps; publishing requires operator approval before execution",
+        "risks": "array — brand risk, off-message risk, or any external-comms gate triggers",
+        "assumptions": "array — brand rules, audience, and message constraints assumed",
+        "requests_to_user": "array — approval requests for any publish or external action"
+    },
+    "allowed_actions": [
+        "produce_artifact",
+        "update_task",
+        "log_decision_request",
+        "no_op"
+    ],
+    "requires_decision_when": [
+        "external_comms",
+        "policy_change",
+        "security_change",
+        "client_data",
+        "data_export",
+        "architecture_change",
+        "deployment"
+    ],
+    "artifact_types_allowed": [
+        "script",
+        "email_draft",
+        "sequence",
+        "positioning",
+        "content_plan",
+        "pr_brief",
+        "brand_check",
+        "message_framework"
+    ],
+    "forbidden_outputs": [
+        "public_publish",
+        "send_email",
+        "deploy",
+        "create_public_endpoint",
+        "send_sms",
+        "post_to_social"
+    ],
+    "notes": "marketing_pr produces internal planning and content only. All content artifacts must align to TechSafe governance-first posture. No external publishing without explicit operator approval."
+}

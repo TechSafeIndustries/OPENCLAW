@@ -1,0 +1,17 @@
+{
+    "request_id": "req_sales_founder_001",
+    "session_id": "founder_test_session",
+    "ts": "2026-02-22T15:44:00.000Z",
+    "initiator": "user",
+    "user_goal": "Draft an internal sales outreach script for our enterprise pipeline — qualify top 5 prospects and script the opening conversation. Internal use only, no sending.",
+    "constraints": {
+        "no_public_exposure": true,
+        "structured_outputs_only": true,
+        "on_demand_only": true,
+        "additional": []
+    },
+    "risk_flags": {
+        "external_comms": true
+    },
+    "context": {}
+}

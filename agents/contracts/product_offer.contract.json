@@ -1,0 +1,53 @@
+{
+    "agent": "product_offer",
+    "version": "v1.0",
+    "required_fields": [
+        "agent",
+        "version",
+        "intent",
+        "summary",
+        "outputs",
+        "ledger_writes"
+    ],
+    "output_sections": {
+        "summary": "string (max 300 chars) — what product/offer output was produced and for which goal",
+        "outputs": "array — internal product design documents, requirements, pricing logic, packaging",
+        "next_actions": "array — internal design steps; architecture changes require explicit instruction",
+        "risks": "array — scope creep, architecture assumptions, or SaaS pattern risks",
+        "assumptions": "array — current state, constraints, and goal assumptions",
+        "requests_to_user": "array — clarifications or approvals needed before proceeding"
+    },
+    "allowed_actions": [
+        "produce_artifact",
+        "update_task",
+        "log_decision_request",
+        "no_op"
+    ],
+    "requires_decision_when": [
+        "external_comms",
+        "policy_change",
+        "security_change",
+        "client_data",
+        "data_export",
+        "architecture_change",
+        "deployment"
+    ],
+    "artifact_types_allowed": [
+        "requirements",
+        "scope",
+        "pricing",
+        "roadmap",
+        "packaging",
+        "product_brief",
+        "feature_spec"
+    ],
+    "forbidden_outputs": [
+        "public_publish",
+        "send_email",
+        "deploy",
+        "create_public_endpoint",
+        "infra_scaling",
+        "saas_gateway_pattern"
+    ],
+    "notes": "product_offer produces internal design documents only. No SaaS gateway patterns. No infra expansion unless explicitly instructed. Architecture changes require a separate governance-gated request."
+}

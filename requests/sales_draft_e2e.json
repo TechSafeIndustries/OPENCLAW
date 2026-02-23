@@ -1,0 +1,16 @@
+{
+    "request_id": "req_sales_draft_e2e_001",
+    "ts": "2026-02-23T03:19:00.000Z",
+    "initiator": "user",
+    "user_goal": "Draft an internal sales outreach sequence for enterprise prospects — produce a 3-step email draft sequence for our top pipeline accounts. Internal drafts only, no sending.",
+    "constraints": {
+        "no_public_exposure": true,
+        "structured_outputs_only": true,
+        "on_demand_only": true,
+        "additional": []
+    },
+    "risk_flags": {
+        "external_comms": true
+    },
+    "context": {}
+}
