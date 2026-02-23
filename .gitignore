@@ -114,3 +114,9 @@ __pycache__/
 
 # Runtime-generated request files (written by workflow scripts, not source)
 requests/_runtime/
+
+# Credential and service account files — NEVER commit these
+openclaw-auth.json
+*-auth.json
+*.service-account.json
+*-credentials.json
