@@ -8,6 +8,7 @@
 > | `workflow:founder-sales-draft` | Founder sales draft (SALES_INTERNAL → sales agent) | §1 |
 > | `workflow:founder-marketing-draft` | Founder marketing draft (MARKETING_INTERNAL → marketing_pr agent) | §5 |
 > | `workflow:governance-triage` | **Execution loop** — pop oldest TODO, run OpenClaw, retrieve artefact | §6 |
+> | `workflow:task-close` | **Close loop** — transition doing → done, write task_close audit action | §7 |
 
 > **⚠️ SHELL WARNING — Read first**
 >
@@ -479,3 +480,119 @@ npm run tasks:list -- WORK_SESSION_ID --status doing
 | Task claimed between peek and pop | step 3 | `ok:true, task:null` — safe, retry triage next cycle |
 | Kimi auth missing in child env | `openclaw_run_task` | Hard exit 1 — ensure `MOONSHOT_API_KEY` is set (`.env` must exist) |
 | Artefact null after 2 attempts | step 5 | `ok:true, artifact:null` — task was popped, run registered; artefact accessible via `artifacts:latest SESSION_ID` |
+
+---
+
+## 7. Task Close Workflow
+
+> **Command:** `npm run workflow:task-close -- <task_id> --reason "<text>" [options]`
+>
+> Completes the triage → execute → **close** loop. Transitions a `doing` task to `done`, writes a structured closure metadata block into `meta_json`, and inserts a `task_close` audit action (distinct from `task_update`).
+
+### When to use
+
+- A task has been triaged (`doing`) and the work is complete
+- You want to formally record the closure reason and link to a producing artefact
+- Routine governance queue hygiene after reviewing `workflow:governance-triage` output
+
+### Command forms
+
+```cmd
+REM Standard close (infer session from task record)
+npm run workflow:task-close -- task_XXXX --reason "Completed draft artefact" --owner cos
+
+REM Close with linked artefact
+npm run workflow:task-close -- task_XXXX --reason "Completed draft artefact" --owner cos --artifact art_YYYY
+
+REM Dry-run — show what WOULD change, no DB writes
+npm run workflow:task-close -- task_XXXX --reason "Completed draft artefact" --dry-run
+
+REM Override session (rarely needed)
+npm run workflow:task-close -- task_XXXX --reason "..." --session sess_ZZZZ
+```
+
+> ⚠️ **Quoting in CMD:** Wrap `--reason` value in double-quotes. In PowerShell, use single-quotes or escaped double-quotes.
+
+### Flags
+
+| Flag | Required | Default | Description |
+|---|---|---|---|
+| `<task_id>` | ✅ | — | Task to close (must be positional, before flags) |
+| `--reason <text>` | ✅ | — | Closure reason, max 240 chars |
+| `--owner <agent>` | — | `cos` | Closed-by agent, written to `meta_json.closed_by` |
+| `--artifact <id>` | — | `null` | Artefact ID to link; written to `meta_json.closed_artifact_id` |
+| `--session <id>` | — | inferred | Override session for the audit action row |
+| `--dry-run` | — | off | Validate + show would-change; do NOT write to DB |
+
+### Two-step flow
+
+```
+[1] tasks:get <task_id>       Read task, confirm status = doing  → ok:false + exit 1 if not doing
+[2] tasks:close <task_id>     Atomic: UPDATE tasks + INSERT action (task_close)
+                              meta_json gains: close_reason, closed_by, closed_at,
+                                               closed_artifact_id, closed_session_id
+```
+
+### Output shape
+
+```json
+{
+  "ok": true,
+  "task_id": "task_XXXX",
+  "session_id": "sess_YYYY",
+  "owner": "cos",
+  "artifact_id": "art_ZZZZ" | null,
+  "before": { "status": "doing", "owner_agent": "cos", "meta": { ... } },
+  "after":  {
+    "status": "done",
+    "owner_agent": "cos",
+    "close_reason": "...",
+    "closed_by": "cos",
+    "closed_at": "2026-02-23T05:47:30.213Z",
+    "closed_artifact_id": null,
+    "closed_session_id": "sess_YYYY"
+  },
+  "action_id": "task_close_<timestamp>",
+  "notes": [ "Task transitioned doing → done in a single atomic transaction", ... ]
+}
+```
+
+**Guard failure** (`status != doing`):
+```json
+{ "ok": false, "step": "status_guard", "error": "STATUS_GUARD_FAILED: ...", "hint": "..." }
+```
+
+### Audit trail
+
+| CLI | Ledger write |
+|---|---|
+| `tasks:close` | `tasks` (status `doing → done`, `meta_json` closure block) + 1 × `actions` (`type=task_close`, `status=ok`) — single atomic txn |
+
+Verify after close:
+```cmd
+npm run tasks:get -- task_XXXX
+```
+
+Look for `"status": "done"` and the closure fields in `meta`.
+
+### Failure modes
+
+| Failure | Behaviour |
+|---|---|
+| `task_id` not provided | `ok:false, exit 1` immediately |
+| `--reason` missing or empty | `ok:false, exit 1` immediately |
+| `--reason` > 240 chars | `ok:false, exit 1` immediately |
+| Task not found | `ok:false, step=tasks_get, NOT_FOUND` |
+| Task not `doing` (todo/done/blocked) | `ok:false, step=status_guard` with `hint` field |
+| DB write fails | `ok:false, step=tasks_close, DB_WRITE_FAILED` |
+| Dry-run | Always `ok:true`, `after:null`, `action_id:null` |
+
+### Full execution loop
+
+The three workflows together complete the governance execution cycle:
+
+```
+npm run workflow:governance-triage    → pops oldest TODO → doing, runs OpenClaw
+npm run workflow:task-close -- <id>   → closes doing → done, writes audit
+```
+
