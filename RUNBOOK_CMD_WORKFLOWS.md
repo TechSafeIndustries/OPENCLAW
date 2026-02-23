@@ -14,6 +14,7 @@
 > | `tasks:policy-gate` | **Policy gate CLI** — mark task blocked with `hil_required=true`, write `policy_gate` audit action | §10 |
 > | `workflow:policy-show` | **Policy Ops** — print current autonomy policy as JSON (read-only) | §11 |
 > | `workflow:policy-validate` | **Policy Ops** — deep-validate autonomy policy against locked enum + range checks (read-only) | §11 |
+> | `stack:check` | **Stack Check** — consolidated health check: runbook + policy + triage dry-run | §12 |
 
 > **⚠️ SHELL WARNING — Read first**
 >
@@ -1108,3 +1109,59 @@ npm run workflow:policy-validate
 - Intent enum source of truth is `app/router_v1.js` `INTENT_RULES` — validate reads it at runtime.
 - `warnings` in the output are non-fatal (exit 0 still). Treat them as style issues to address.
 - Exit code 1 means the policy is invalid and triage will likely gate everything (fail-safe behaviour).
+
+---
+
+## 12. Stack Check
+
+> **After Updates: always run `npm run stack:check` to confirm the stack is healthy.**
+
+Consolidated health check. Runs three steps sequentially and emits a single deterministic JSON result. Short-circuits on first failure.
+
+```cmd
+npm run stack:check
+```
+
+**Steps (in order):**
+
+| Step | Internal command | What it checks |
+|---|---|---|
+| `runbook` | `workflow:runbook-check` | Ledger integrity + Kimi API auth ping + env sanity |
+| `policy` | `workflow:policy-validate` | Policy file: 10 deep checks against locked intent enum |
+| `triage_dry_run` | `workflow:governance-triage --dry-run --owner cos` | End-to-end triage path: session, oldest task candidate, policy gate - no writes |
+
+**Output (ok:true, exit 0) - all checks pass:**
+```json
+{
+  "ok": true,
+  "checks": {
+    "runbook":        { "ok": true, "checks": { "ledger": {}, "kimi": {} }, "env": {} },
+    "policy":         { "ok": true, "version": "1.0", "checks": {}, "warnings": [] },
+    "triage_dry_run": { "ok": true, "dry_run": true, "would_pop_task": null }
+  },
+  "summary": { "total": 3, "passed": 3, "failed": 0 }
+}
+```
+
+**Output (ok:false, exit 1) - a step failed:**
+```json
+{
+  "ok": false,
+  "failed_step": "runbook",
+  "error": "STEP_FAILED",
+  "checks": { "runbook": { "ok": false } },
+  "summary": { "total": 3, "passed": 0, "failed": 1 }
+}
+```
+
+**triage_dry_run valid ok:true states:**
+
+| `would_pop_task` | Meaning |
+|---|---|
+| `{ id, title, ... }` | A TODO task exists and would pass the gate |
+| `null` (+ `no_work:true`) | No non-stub TODO tasks - healthy, not broken |
+
+**Notes:**
+- No DB writes. Triage dry-run exits before popping any task.
+- Timeouts: runbook 90s (Kimi ping), policy 15s, triage dry-run 30s.
+- Run after any of: dep updates, policy edits, env changes, new CLIs wired in.

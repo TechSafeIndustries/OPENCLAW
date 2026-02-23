@@ -29,6 +29,7 @@
     "tasks:policy-gate": "node app/tasks_policy_gate_cli_v1.js",
     "tasks:review-update": "node app/tasks_review_update_cli_v1.js",
     "workflow:runbook-check": "node app/workflow_runbook_check_v1.js",
+    "stack:check": "node app/stack_check_cli_v1.js",
     "workflow:governance-triage": "node app/workflow_governance_triage_v1.js",
     "workflow:task-close": "node app/workflow_task_close_v1.js",
     "workflow:human-review": "node app/workflow_human_review_v1.js",
