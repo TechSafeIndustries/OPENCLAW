@@ -26,6 +26,7 @@
     "tasks:oldest": "node app/tasks_oldest_cli_v1.js",
     "tasks:close": "node app/tasks_close_cli_v1.js",
     "tasks:stop-loss": "node app/tasks_stop_loss_cli_v1.js",
+    "tasks:policy-gate": "node app/tasks_policy_gate_cli_v1.js",
     "tasks:review-update": "node app/tasks_review_update_cli_v1.js",
     "workflow:runbook-check": "node app/workflow_runbook_check_v1.js",
     "workflow:governance-triage": "node app/workflow_governance_triage_v1.js",

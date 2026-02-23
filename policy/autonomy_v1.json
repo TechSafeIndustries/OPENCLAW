@@ -1,0 +1,59 @@
+{
+    "_comment": [
+        "OpenClaw Autonomy Policy Matrix v1",
+        "Intents must match the locked enum in app/router_v1.js exactly.",
+        "Locked intents: GOVERNANCE_REVIEW, PLAN_WORK, SALES_INTERNAL, MARKETING_INTERNAL, PRODUCT_OFFER, OPS_INTERNAL",
+        "Default stance: unknown or missing intent → HITL (policy_gate).",
+        "To update: edit this file. No code changes required. Loader validates keys on every run.",
+        "NEVER add intents here that do not exist in router_v1.js INTENT_RULES or GOVERNANCE_REVIEW fallback."
+    ],
+    "version": "1.0",
+    "tier1_allowed_intents": [
+        "GOVERNANCE_REVIEW",
+        "PLAN_WORK",
+        "OPS_INTERNAL"
+    ],
+    "tier2_founder_allowed_intents": [
+        "SALES_INTERNAL",
+        "MARKETING_INTERNAL"
+    ],
+    "force_hitl_intents": [
+        "PRODUCT_OFFER"
+    ],
+    "forbidden_phrases": [
+        "send email",
+        "send sms",
+        "publish to",
+        "post to",
+        "post live",
+        "deploy to prod",
+        "deploy to production",
+        "deploy to live",
+        "buy",
+        "pay",
+        "charge",
+        "call client",
+        "call customer",
+        "public api",
+        "saas",
+        "vps",
+        "redis",
+        "bigquery",
+        "scale out",
+        "webhook"
+    ],
+    "stop_loss_triggers": [
+        "REJECTED",
+        "BLOCKED",
+        "GATED",
+        "REPAIR_FAILED"
+    ],
+    "artifact_retry_once_ms": 1000,
+    "policy_notes": {
+        "tier1": "PLAN_WORK, GOVERNANCE_REVIEW, OPS_INTERNAL are safe internal structural tasks — auto-execute.",
+        "tier2": "SALES_INTERNAL and MARKETING_INTERNAL require Founder Mode flag and draft-only enforcement — not auto-executed by triage.",
+        "hitl": "PRODUCT_OFFER is gated: pricing, scope, and offer decisions require human sign-off before execution.",
+        "default": "Any intent not in tier1_allowed_intents is treated as HITL (policy_gate). Triage is conservative by design.",
+        "forbidden_phrases": "Any task whose title or details contain a forbidden phrase is stopped regardless of intent. Case-insensitive match."
+    }
+}

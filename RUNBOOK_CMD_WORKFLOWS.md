@@ -11,6 +11,7 @@
 > | `workflow:task-close` | **Close loop** — transition doing → done, write task_close audit action | §7 |
 > | `tasks:stop-loss` | **Stop-loss CLI** — mark task blocked, write stop_loss audit action | §8 |
 > | `workflow:human-review` | **Human review** — governance override: review → retry\|close\|reject a stop-lossed task | §9 |
+> | `tasks:policy-gate` | **Policy gate CLI** — mark task blocked with `hil_required=true`, write `policy_gate` audit action | §10 |
 
 > **⚠️ SHELL WARNING — Read first**
 >
@@ -870,3 +871,136 @@ npm run workflow:human-review -- <task_id> --decision reject --reason "Violates 
 - `workflow:task-close` is bypassed for the close path: it guards for `status=doing`; human-review close handles `blocked → done` directly via the review CLI.
 - Original stop-loss fields (`stop_loss_triggered`, `stop_loss_reason`, etc.) are **never deleted** — preserved as permanent audit history.
 - `approve_override_cli_v1.js` bug fix: the positional filter now correctly handles the absent `--run` flag (was filtering `args[0]` off-by-one).
+
+---
+
+## 10. Autonomy Policy Matrix
+
+> **The pre-execution access control layer.** Determines whether a task may be
+> auto-executed by `workflow:governance-triage` or must be held for human review.
+> Evaluated on every triage run, before any task is popped.
+
+### Where the policy lives
+
+```
+policy/autonomy_v1.json   ← single source of truth
+app/utils/policy_loader_v1.js    ← loader + gate check (no cache; re-read every run)
+app/tasks_policy_gate_cli_v1.js  ← CLI that writes policy_gate audit action
+```
+
+### Default stance
+
+**Unknown or missing intent → HITL.** Triage is conservative by design.
+If a task has no `meta_json.intent` field, policyGateCheck returns `gated:true`.
+
+### Intent tiers
+
+| Tier | Policy key | Intents | Triage behaviour |
+|---|---|---|---|
+| **Tier 1** | `tier1_allowed_intents` | `GOVERNANCE_REVIEW`, `PLAN_WORK`, `OPS_INTERNAL` | Auto-execute — triage proceeds to pop + run |
+| **Tier 2** | `tier2_founder_allowed_intents` | `SALES_INTERNAL`, `MARKETING_INTERNAL` | HITL — use `workflow:founder-*-draft` instead |
+| **Force HITL** | `force_hitl_intents` | `PRODUCT_OFFER` | HITL — pricing/scope decisions require human sign-off |
+| **Unknown** | (default) | anything else / null | HITL — fail-safe |
+
+> ⚠️ Intents in the policy file **must** match the locked enum in `app/router_v1.js`.
+> Do NOT invent intents. The valid set is:
+> `GOVERNANCE_REVIEW`, `PLAN_WORK`, `SALES_INTERNAL`, `MARKETING_INTERNAL`, `PRODUCT_OFFER`, `OPS_INTERNAL`.
+
+### Forbidden phrases (override everything)
+
+If the task title or details contain any phrase from `forbidden_phrases` (case-insensitive),
+the task is **always** gated — regardless of intent tier.
+
+Default forbidden phrases:
+
+```
+send email, send sms, publish to, post to, post live,
+deploy to prod, deploy to production, deploy to live,
+buy, pay, charge, call client, call customer,
+public api, saas, vps, redis, bigquery, scale out, webhook
+```
+
+### Gate evaluation order (triage step 2b)
+
+```
+1. Load policy/autonomy_v1.json (fail-safe: if load fails → gate everything)
+2. Forbidden phrase scan on task title + details (case-insensitive, left-to-right, first match wins)
+   → gated:true if any match
+3. Intent evaluation:
+   a. null/missing intent           → gated:true (HITL default)
+   b. force_hitl_intents            → gated:true
+   c. tier2_founder_allowed_intents → gated:true (use founder-draft workflows)
+   d. tier1_allowed_intents         → gated:false (proceed to pop + execute)
+   e. anything else                 → gated:true (HITL default)
+```
+
+### How triage enforces it
+
+The policy gate runs at **step 2b** — after the stop-loss threshold gate (2a) but**before** the task is popped (step 3). If gated:
+
+1. `tasks:policy-gate CLI` is called → marks task `blocked`, writes `hil_required=true` into `meta_json`
+2. Writes `actions` row: `type=policy_gate`, `status=gated`
+3. Triage exits `ok:false, step:policy_gate, next_action:human_review_required`
+4. Task is **NOT popped** (`tasks:next` is never called)
+
+### Output shape — policy gate triggered
+
+```json
+{
+  "ok": false,
+  "step": "policy_gate",
+  "task_id": "task_...",
+  "session_id": "sess_...",
+  "policy_check": {
+    "gated": true,
+    "reason": "FORBIDDEN_PHRASE: task text contains \"send email\" — auto-execution not permitted",
+    "matched_phrase": "send email",
+    "intent": "OPS_INTERNAL"
+  },
+  "policy_gate_applied": true,
+  "policy_gate_action_id": "policy_gate_<ts>",
+  "next_action": "human_review_required"
+}
+```
+
+### How to update the policy
+
+1. Edit `policy/autonomy_v1.json` directly — no code changes required.
+2. Changes take effect on the **next triage run** (policy is re-read on every invocation).
+3. To add an intent to tier1, **only use existing router intent names**.
+4. To add a forbidden phrase, add a lowercase string to `forbidden_phrases`.
+5. Bump `version` (e.g. `"1.1"`) so gate outputs reflect the change.
+
+```cmd
+REM Example: add a new forbidden phrase
+REM Edit policy/autonomy_v1.json, add "wire transfer" to forbidden_phrases array.
+REM No restart needed. Takes effect immediately on next triage run.
+```
+
+### Remediation after policy gate
+
+A policy-gated task has `status=blocked` and `meta_json.hil_required=true`.
+The operator must review and decide:
+
+```cmd
+REM Option 1: close the task (out of scope)
+npm run workflow:human-review -- <task_id> --decision close --reason "Task violates policy" --owner cos
+
+REM Option 2: reject the task
+npm run workflow:human-review -- <task_id> --decision reject --reason "Forbidden phrase in title" --owner cos
+
+REM Option 3: fix the task title/details to remove the forbidden phrase,
+REM then re-set status=todo via tasks:update, and retry triage.
+npm run tasks:update -- <task_id> --status todo
+npm run workflow:governance-triage -- --session <session_id>
+```
+
+### Invariants
+
+- Policy gate runs **before task pop** — gate never affects a task that is already in `doing` state.
+- `tasks:policy-gate` action type is `policy_gate` (distinct from `stop_loss` and `task_update`) for clean audit queries.
+- `hil_required=true` in task `meta_json` is the canonical flag — query `SELECT * FROM tasks WHERE json_extract(meta_json,'$.hil_required')=1` to list all gated tasks.
+- If the policy file fails to load, policyGateCheck fails safe: ALL tasks are gated (no auto-execution).
+- Policy file is re-read on every triage run — no cache. Changes take effect immediately.
+- Forbidden phrase scan is case-insensitive full-substring match (e.g. `"SEND EMAIL"` matches `"send email"` in forbidden list).
+- The stop-loss threshold gate (step 2a) runs **before** the policy gate (step 2b). A stop-lossed task never reaches the policy gate.

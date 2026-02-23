@@ -53,6 +53,9 @@ try {
     require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
 } catch (_) { /* fall through */ }
 
+// ── Policy loader ─────────────────────────────────────────────────────────────
+const { loadPolicy, policyGateCheck } = require('./utils/policy_loader_v1');
+
 const ROOT = path.resolve(__dirname, '..');
 
 // ── Parse argv ────────────────────────────────────────────────────────────────
@@ -77,6 +80,7 @@ const CLI = {
     tasksNext: path.join(ROOT, 'app', 'tasks_next_cli_v1.js'),
     artifact: path.join(ROOT, 'app', 'artifacts_latest_cli_v1.js'),
     stopLoss: path.join(ROOT, 'app', 'tasks_stop_loss_cli_v1.js'),
+    policyGate: path.join(ROOT, 'app', 'tasks_policy_gate_cli_v1.js'),
 };
 
 const INIT_REQUEST_FILE = path.join(ROOT, 'requests', 'governance_triage.json');
@@ -339,6 +343,72 @@ if (candidateMeta.stop_loss_triggered === true && candidateMeta.stop_loss_retry_
 }
 
 const workSessionId = candidateTask.session_id;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STEP 2b: AUTONOMY POLICY GATE — check policy before popping
+// policy/autonomy_v1.json determines which intents are tier1 (auto) vs HITL.
+// Forbidden phrases override intent allowlist regardless.
+// Default stance: unknown or missing intent → HITL.
+// ─────────────────────────────────────────────────────────────────────────────
+const policyResult = loadPolicy();
+
+// Derive intent from candidateTask.meta.intent (if set by an earlier routing
+// pass), or try to classify from title text using the router keyword map.
+// Triage does NOT call the router here — it re-uses the stored intent or
+// falls back to null (→ HITL by policy default).
+const taskIntent = (candidateTask.meta && candidateTask.meta.intent)
+    ? String(candidateTask.meta.intent).trim().toUpperCase()
+    : null;
+
+// Build full text for forbidden-phrase scan (title + details)
+const taskText = [
+    candidateTask.title || '',
+    candidateTask.details || '',
+].join(' ');
+
+const policyCheck = policyGateCheck(policyResult, { intent: taskIntent, text: taskText });
+
+if (policyCheck.gated) {
+    // Policy denied auto-execution — call tasks:policy-gate CLI to write audit row
+    const pgArgs = [
+        CLI.policyGate,
+        candidateTask.id,
+        '--reason', policyCheck.reason.slice(0, 240),
+        '--policy', policyCheck.reason.split(':')[0] || 'POLICY_GATE',
+        '--owner', ownerArg,
+        '--session', workSessionId,
+    ];
+    if (policyCheck.matched_phrase) { pgArgs.push('--phrase', policyCheck.matched_phrase); }
+    if (policyCheck.intent) { pgArgs.push('--intent', policyCheck.intent); }
+
+    const pgResult = runScript('tasks_policy_gate', pgArgs, 15000);
+
+    process.stdout.write(JSON.stringify({
+        ok: false,
+        step: 'policy_gate',
+        task_id: candidateTask.id,
+        session_id: workSessionId,
+        owner: ownerArg,
+        policy_check: {
+            gated: policyCheck.gated,
+            reason: policyCheck.reason,
+            matched_phrase: policyCheck.matched_phrase || null,
+            intent: policyCheck.intent || taskIntent || null,
+        },
+        policy_gate_applied: pgResult.ok,
+        policy_gate_action_id: pgResult.ok && pgResult.parsed ? pgResult.parsed.action_id : null,
+        policy_gate_cli_error: !pgResult.ok ? (pgResult.error || null) : null,
+        next_action: 'human_review_required',
+        notes: [
+            'Policy gate triggered BEFORE task pop — task was NOT popped (status unchanged by triage).',
+            'tasks:policy-gate CLI marked task blocked with hil_required=true.',
+            `Policy file: policy/autonomy_v1.json (version: ${policyResult.ok ? policyResult.policy.version : 'load_failed'})`,
+            'To remediate: npm run workflow:human-review -- <task_id> --decision retry|close|reject --reason "<reason>"',
+            'Or update task intent in meta_json to a tier1 allowed intent and retry triage.',
+        ],
+    }, null, 2) + '\n');
+    process.exit(0);   // exit 0 — operational outcome, not a crash
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 3: Pop the task (tasks:next — writes audit trail)
