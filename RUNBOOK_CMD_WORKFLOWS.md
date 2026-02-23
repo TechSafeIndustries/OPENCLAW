@@ -12,6 +12,8 @@
 > | `tasks:stop-loss` | **Stop-loss CLI** — mark task blocked, write stop_loss audit action | §8 |
 > | `workflow:human-review` | **Human review** — governance override: review → retry\|close\|reject a stop-lossed task | §9 |
 > | `tasks:policy-gate` | **Policy gate CLI** — mark task blocked with `hil_required=true`, write `policy_gate` audit action | §10 |
+> | `workflow:policy-show` | **Policy Ops** — print current autonomy policy as JSON (read-only) | §11 |
+> | `workflow:policy-validate` | **Policy Ops** — deep-validate autonomy policy against locked enum + range checks (read-only) | §11 |
 
 > **⚠️ SHELL WARNING — Read first**
 >
@@ -1004,3 +1006,105 @@ npm run workflow:governance-triage -- --session <session_id>
 - Policy file is re-read on every triage run — no cache. Changes take effect immediately.
 - Forbidden phrase scan is case-insensitive full-substring match (e.g. `"SEND EMAIL"` matches `"send email"` in forbidden list).
 - The stop-loss threshold gate (step 2a) runs **before** the policy gate (step 2b). A stop-lossed task never reaches the policy gate.
+
+---
+
+## 11. Policy Ops
+
+> **Read-only policy inspection tools.** No DB access. No writes. Safe to run at any time.
+
+### 11.1 workflow:policy-show
+
+Prints the current Autonomy Policy Matrix as formatted JSON.
+
+```cmd
+npm run workflow:policy-show
+```
+
+**Output (success):**
+```json
+{
+  "ok": true,
+  "policy_path": "policy\\autonomy_v1.json",
+  "version": "1.0",
+  "policy": { ... }    // full parsed policy object
+}
+```
+
+**Output (failure, exit 1):**
+```json
+{ "ok": false, "error": "POLICY_NOT_FOUND", "detail": "..." }
+{ "ok": false, "error": "POLICY_READ_FAIL",  "detail": "..." }
+```
+
+---
+
+### 11.2 workflow:policy-validate
+
+Deep-validates the policy file against 10 checks. Reuses locked intent enum from `app/router_v1.js` at runtime (single source of truth — no duplicated lists).
+
+```cmd
+npm run workflow:policy-validate
+```
+
+**Checks performed:**
+
+| Check | Description |
+|---|---|
+| `C1_JSON_PARSE` | File exists and parses as valid JSON |
+| `C2_REQUIRED_KEYS` | All 7 required top-level keys present |
+| `C3_ARRAY_TYPES` | Array keys are arrays; intent arrays non-empty |
+| `C4_NO_BLANK_ENTRIES` | No non-string or blank/empty entries in any string array |
+| `C5_PHRASE_FORMAT` | `forbidden_phrases` entries are trimmed + lowercase (warn if not) |
+| `C6_RETRY_MS` | `artifact_retry_once_ms` is integer in `[250, 5000]` |
+| `C7_INTENT_ENUM` | All intent values in `tier1/tier2/force_hitl` arrays belong to locked enum extracted from `router_v1.js` |
+| `C8_NO_INTENT_OVERLAP` | No single intent appears in more than one intent category |
+| `C9_VERSION` | `version` is a non-empty string |
+| `C10_STOP_LOSS_TRIGGERS` | `stop_loss_triggers` values belong to known set: `REJECTED`, `BLOCKED`, `GATED`, `REPAIR_FAILED` (warns on unknown, does not fail) |
+
+**Output (ok:true):**
+```json
+{
+  "ok": true,
+  "version": "1.0",
+  "policy_path": "policy\\autonomy_v1.json",
+  "checks": {
+    "C1_JSON_PARSE": { "pass": true },
+    "C2_REQUIRED_KEYS": { "pass": true, "keys": [...] },
+    "C7_INTENT_ENUM": {
+      "pass": true,
+      "locked_enum": ["GOVERNANCE_REVIEW", "PLAN_WORK", "SALES_INTERNAL",
+                      "MARKETING_INTERNAL", "PRODUCT_OFFER", "OPS_INTERNAL"],
+      "all_intents_valid": true
+    },
+    "...": "..."
+  },
+  "warnings": []   // non-fatal issues (e.g. C5 casing, C10 unknown triggers)
+}
+```
+
+**Output (ok:false, exit 1):**
+```json
+{
+  "ok": false,
+  "error": "POLICY_VALIDATION_FAILED",
+  "version": "1.0",
+  "policy_path": "policy\\autonomy_v1.json",
+  "details": {
+    "C6_RETRY_MS": { "pass": false, "error": "artifact_retry_once_ms must be...", "got": 50 },
+    "C7_INTENT_ENUM": { "pass": false, "violations": { "force_hitl_intents": ["UNKNOWN_INTENT"] } }
+  },
+  "warnings": [...]
+}
+```
+
+**Always run validate after editing `policy/autonomy_v1.json`:**
+```cmd
+npm run workflow:policy-validate
+```
+
+**Notes:**
+- Both commands are **read-only**. No DB access, no writes.
+- Intent enum source of truth is `app/router_v1.js` `INTENT_RULES` — validate reads it at runtime.
+- `warnings` in the output are non-fatal (exit 0 still). Treat them as style issues to address.
+- Exit code 1 means the policy is invalid and triage will likely gate everything (fail-safe behaviour).

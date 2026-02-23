@@ -32,6 +32,8 @@
     "workflow:governance-triage": "node app/workflow_governance_triage_v1.js",
     "workflow:task-close": "node app/workflow_task_close_v1.js",
     "workflow:human-review": "node app/workflow_human_review_v1.js",
+    "workflow:policy-show": "node app/workflow_policy_show_v1.js",
+    "workflow:policy-validate": "node app/workflow_policy_validate_v1.js",
     "workflow:founder-sales-draft": "node app/workflow_founder_sales_draft_v1.js",
     "workflow:founder-marketing-draft": "node app/workflow_founder_marketing_draft_v1.js",
     "contract:test": "node app/validate_contract_test_v1.js",
