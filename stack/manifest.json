@@ -1,0 +1,20 @@
+{
+  "name": "OpenClaw / TechSafe governance brain",
+  "scope": "default",
+  "version": "1.0",
+  "components": [
+    { "id": "node", "type": "runtime", "pin": "package engines or documented target", "check": "node -v" },
+    { "id": "npm", "type": "runtime", "pin": "package-lock.json", "check": "npm -v" },
+    { "id": "openclaw_deps", "type": "repo", "pin": "package-lock.json", "check": "npm outdated --json" },
+    { "id": "openai_sdk", "type": "repo", "pin": "package-lock.json", "check": "npm ls openai --json" },
+    { "id": "sqlite_driver", "type": "repo", "pin": "package-lock.json", "check": "npm ls better-sqlite3 --json" },
+    { "id": "moonshot_kimi", "type": "llm", "pin": "KIMI_BASE_URL + KIMI_MODEL", "check": "npm run models:list" },
+    { "id": "antigravity", "type": "tooling", "pin": "local install", "check": "manual" },
+    { "id": "git", "type": "tooling", "pin": "local install", "check": "git --version" }
+  ],
+  "post_update_checks": [
+    "npm run workflow:runbook-check",
+    "npm run workflow:policy-validate",
+    "npm run workflow:governance-triage -- --dry-run --owner cos"
+  ]
+}
