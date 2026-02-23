@@ -1,0 +1,5 @@
+
+> openclaw-gateway@0.1.0 models:list
+> node app/models_list_cli_v1.js
+
+{"ok":false,"base_url":"https://api.moonshot.cn/v1","error":"KIMI_API_CALL_FAILED: 401 Invalid Authentication"}
