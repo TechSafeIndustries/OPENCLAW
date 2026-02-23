@@ -41,6 +41,7 @@
  *
  * Audit trail:
  *   retry:  decisions/actions rows from approve:override + action human_review_retry
+ *           + action policy_override (if task was policy-gated)
  *   close:  action human_review_close
  *   reject: action human_review_reject
  *
@@ -363,6 +364,7 @@ if (decision === 'retry') {
             approved_by: owner,
         },
         apply: retryResult.parsed,
+        policy_override_action_id: (retryResult.parsed && retryResult.parsed.policy_override_action_id) || null,
         next_action: 'run triage again',
         next_command: `npm run workflow:governance-triage -- --session ${resolvedSessionId}`,
         notes: [
@@ -370,8 +372,11 @@ if (decision === 'retry') {
             'task status: blocked → todo',
             'stop_loss_triggered preserved (original stop-loss fields intact)',
             'stop_loss_retry_approved=true added to meta — triage threshold gate will check this to allow re-execution',
+            taskMeta.policy_gate_triggered === true
+                ? `policy_override action written — action id: ${(retryResult.parsed && retryResult.parsed.policy_override_action_id) || 'see apply.policy_override_action_id'}`
+                : null,
             `Run: npm run workflow:governance-triage -- --session ${resolvedSessionId}`,
-        ],
+        ].filter(Boolean),
     }, null, 2) + '\n');
     process.exit(0);
 }

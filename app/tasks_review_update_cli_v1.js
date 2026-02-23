@@ -291,6 +291,63 @@ try {
     process.exit(1);
 }
 
+// ── Policy override audit row (retry path only) ────────────────────────────────
+// If the task was policy-gated (policy_gate_triggered=true in meta), write a
+// separate policy_override action row to record the operator's explicit approval
+// of the policy exception. This is NON-FATAL if it fails — the retry is already
+// committed. policy_gate fields are NEVER cleared; they are preserved as evidence.
+let policyOverrideActionId = null;
+let policyOverrideNote = null;
+
+if (decision === 'retry' && existingMeta.policy_gate_triggered === true) {
+    const poActionId = 'policy_override_' + (Date.now() + 1);  // +1 ms offset from main action
+    const poReason = [
+        `task_id=${taskId}`,
+        `session_id=${resolvedSessionId}`,
+        `overridden_gate=policy_gate`,
+        `owner=${owner}`,
+        `review_reason="${trimmedReason.slice(0, 80)}"`,
+    ].join('; ');
+    const poMeta = JSON.stringify({
+        task_id: taskId,
+        session_id: resolvedSessionId,
+        owner,
+        review_reason: trimmedReason,
+        overridden_gate: 'policy_gate',
+        // Preserve the original gate context for full audit trail
+        policy_gate_phrase: existingMeta.policy_gate_phrase || null,
+        policy_gate_intent: existingMeta.policy_gate_intent || null,
+        policy_gate_policy: existingMeta.policy_gate_policy || null,
+        policy_gate_at: existingMeta.policy_gate_at || null,
+        policy_gate_reason: existingMeta.policy_gate_reason || null,
+    });
+
+    try {
+        db.prepare(`
+            INSERT INTO actions
+              (id, session_id, ts, actor, type, input_ref, output_ref, status, reason, meta_json)
+            VALUES
+              (@id, @session_id, @ts, @actor, @type, @input_ref, @output_ref, @status, @reason, @meta_json)
+        `).run({
+            id: poActionId,
+            session_id: resolvedSessionId,
+            ts: new Date().toISOString(),
+            actor: 'ops',
+            type: 'policy_override',
+            input_ref: null,
+            output_ref: null,
+            status: 'ok',
+            reason: poReason,
+            meta_json: poMeta,
+        });
+        policyOverrideActionId = poActionId;
+        policyOverrideNote = 'policy_override action written — operator explicitly approved policy exception';
+    } catch (err) {
+        // Non-fatal: retry is already committed; surface the error in output
+        policyOverrideNote = `policy_override action FAILED (non-fatal): ${err.message}`;
+    }
+}
+
 // ── Re-fetch ──────────────────────────────────────────────────────────────────
 let updated;
 try {
@@ -330,6 +387,7 @@ process.stdout.write(JSON.stringify({
     artifact_id: artifactId,
     action_id: actionId,
     action_type: actionType,
+    policy_override_action_id: policyOverrideActionId,
     before: beforeSnapshot,
     after: afterSnapshot,
     notes: [
@@ -340,6 +398,7 @@ process.stdout.write(JSON.stringify({
             : decision === 'close'
                 ? 'Task transitioned blocked → done without going through doing (human-review close path)'
                 : 'Task remains blocked. review_rejected=true added to meta_json.',
-    ],
+        policyOverrideNote || null,
+    ].filter(Boolean),
 }, null, 2) + '\n');
 process.exit(0);
