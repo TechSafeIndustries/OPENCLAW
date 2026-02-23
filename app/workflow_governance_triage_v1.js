@@ -11,10 +11,23 @@
  *   0. Preflight       — workflow:runbook-check
  *   1. Session         — use --session if supplied, else init via openclaw:run
  *   2. Find work       — tasks:oldest --no-stub [--session <id>]
+ *   2a. Stop-loss gate — if candidate task.meta.stop_loss_triggered: abort, human_review_required
  *   3. Pop             — tasks:next <session_id> --no-stub --owner <owner>
  *   4. Execute         — openclaw:run <runtime_request.json>
+ *   4a. Stop-loss gate — classify runResult; on REJECTED/BLOCKED/GATED/repair_fail:
+ *                        call tasks:stop-loss, return ok:false next_action=human_review_required
  *   5. Retrieve        — artifacts:latest <session_id> --no-stub (1 retry)
  *   6. Output          — consolidated JSON
+ *
+ * Stop-loss trigger conditions (v1):
+ *   - dispatch.state === 'REJECTED'                  → contract failed after repair exhausted
+ *   - dispatch.state === 'BLOCKED'                   → gate keyword hard-blocked
+ *   - dispatch.state === 'GATED'                     → governance required, stuck permanently
+ *   - dispatch.repair_attempted && !repair_succeeded  → belt-and-suspenders
+ *
+ * Threshold gate:
+ *   - If candidate task already has meta.stop_loss_triggered=true → abort before pop
+ *     → ok:false, next_action: human_review_required
  *
  * Usage:
  *   node app/workflow_governance_triage_v1.js
@@ -23,7 +36,7 @@
  *     [--dry-run]             steps 0-2 only, no state changes, shows WOULD-pop task
  *
  * Output: single JSON object on stdout.
- * Exit 0 = ok:true (task may be null if queue empty).
+ * Exit 0 = ok:true (task may be null if queue empty) OR ok:false (stop-loss).
  * Exit 1 = hard failure (preflight, CLI error, etc.).
  *
  * Deps: Node core (child_process, path, fs), dotenv (already in project).
@@ -63,6 +76,7 @@ const CLI = {
     tasksOldest: path.join(ROOT, 'app', 'tasks_oldest_cli_v1.js'),
     tasksNext: path.join(ROOT, 'app', 'tasks_next_cli_v1.js'),
     artifact: path.join(ROOT, 'app', 'artifacts_latest_cli_v1.js'),
+    stopLoss: path.join(ROOT, 'app', 'tasks_stop_loss_cli_v1.js'),
 };
 
 const INIT_REQUEST_FILE = path.join(ROOT, 'requests', 'governance_triage.json');
@@ -133,6 +147,54 @@ function sleepMs(ms) {
     Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
 
+// ── Helper: classify openclaw:run result for stop-loss ─────────────────────────
+// Returns null if clean (ok to continue), or { failure_type, reason } if stop-loss needed.
+//
+// openclaw_cli_v1.js exits 0 for ALL terminal states (DISPATCHED/GATED/BLOCKED/REJECTED).
+// We inspect the parsed JSON to classify the failure.
+function classifyStopLoss(runResult) {
+    if (!runResult) return { failure_type: 'MISSING_RESULT', reason: 'openclaw:run returned no parseable output' };
+
+    const dispatch = runResult.dispatch || {};
+    const state = dispatch.state;           // DISPATCHED | GATED | BLOCKED | REJECTED
+
+    // REJECTED: contract validation failed both first-pass and repair
+    if (state === 'REJECTED') {
+        return {
+            failure_type: 'REJECTED',
+            reason: 'Contract validation failed (repair exhausted): ' + (dispatch.reason || 'no detail'),
+        };
+    }
+
+    // BLOCKED: router gate keyword hard-stopped the request  
+    if (state === 'BLOCKED') {
+        return {
+            failure_type: 'BLOCKED',
+            reason: 'Gate decision blocked: ' + (dispatch.reason || 'no detail'),
+        };
+    }
+
+    // GATED: governance required but not overridden — cannot proceed automatically
+    if (state === 'GATED') {
+        return {
+            failure_type: 'GATED',
+            reason: 'Governance gate held — manual approval required: ' + (dispatch.reason || 'no detail'),
+        };
+    }
+
+    // Belt-and-suspenders: DISPATCHED but repair was attempted and failed
+    // (repair_succeeded is false AND repair_attempted is true AND no artifact produced)
+    if (state === 'DISPATCHED' && dispatch.repair_attempted === true && dispatch.repair_succeeded === false) {
+        return {
+            failure_type: 'REPAIR_FAILED',
+            reason: 'Dispatch reached DISPATCHED but repair was needed and failed — no valid artifact produced',
+        };
+    }
+
+    // DISPATCHED + repair not needed, or repair succeeded → clean
+    return null;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 0: Preflight
 // ─────────────────────────────────────────────────────────────────────────────
@@ -149,14 +211,12 @@ if (!preflight.ok || !preflight.parsed || preflight.parsed.ok !== true) {
 // ─────────────────────────────────────────────────────────────────────────────
 let sessionId;
 let sessionFromArg = false;
-let initRun = null;  // populated if we created a new session via openclaw:run
+let initRun = null;
 
 if (sessionArg) {
-    // Use provided session — skip openclaw:run init
     sessionId = sessionArg;
     sessionFromArg = true;
 } else {
-    // Create a new triage session via openclaw:run (no --founder — this is governance work)
     const step1 = runScript('triage_session_init', [
         CLI.run,
         INIT_REQUEST_FILE,
@@ -180,15 +240,12 @@ if (sessionArg) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// STEP 2: Find oldest real TODO task
-// tasks:oldest --no-stub [--session <id>] — read-only, no state change
+// STEP 2: Find oldest real TODO task (read-only peek)
 // ─────────────────────────────────────────────────────────────────────────────
 const oldestArgs = [CLI.tasksOldest, '--no-stub'];
 if (sessionArg) {
-    // Session-scoped: only look within the provided session
     oldestArgs.push('--session', sessionId);
 }
-// Without --session: peeks across ALL sessions to find any pending TODO
 
 const step2 = runScript('tasks_oldest', oldestArgs, 10000);
 if (!step2.ok) {
@@ -199,8 +256,15 @@ if (!step2.ok) {
 
 const candidateTask = step2.parsed && step2.parsed.task;
 
-// ── Dry-run exits here after showing what would be popped ─────────────────────
+// ── Dry-run exits here ────────────────────────────────────────────────────────
 if (dryRun) {
+    // Peek at stop-loss status of candidate if it exists
+    const dryRunStopLoss = candidateTask
+        ? (candidateTask.meta && candidateTask.meta.stop_loss_triggered === true
+            ? { stop_loss_triggered: true, stop_loss_reason: candidateTask.meta.stop_loss_reason, stop_loss_at: candidateTask.meta.stop_loss_at }
+            : { stop_loss_triggered: false })
+        : null;
+
     process.stdout.write(JSON.stringify({
         ok: true,
         dry_run: true,
@@ -208,12 +272,16 @@ if (dryRun) {
         session_id: sessionId,
         session_from_arg: sessionFromArg,
         would_pop_task: candidateTask,
+        candidate_stop_loss: dryRunStopLoss,
         would_execute: candidateTask
-            ? `openclaw:run <runtime_request> with session_id=${candidateTask.session_id}`
+            ? (dryRunStopLoss && dryRunStopLoss.stop_loss_triggered
+                ? 'BLOCKED — stop_loss_triggered=true, human_review_required'
+                : `openclaw:run <runtime_request> with session_id=${candidateTask.session_id}`)
             : 'nothing — no non-stub TODO task found',
         notes: [
             'Dry-run exits after step 2 (no state changes, no task pops)',
             '--no-stub enforced on tasks:oldest',
+            'Stop-loss check shown but not enforced in dry-run (no pop occurs)',
             'To execute: re-run without --dry-run',
         ],
     }, null, 2) + '\n');
@@ -238,8 +306,36 @@ if (!candidateTask) {
     process.exit(0);
 }
 
-// The task to pop may belong to a DIFFERENT session than our triage init session.
-// tasks:next is session-scoped — we use the CANDIDATE task's session_id.
+// ─────────────────────────────────────────────────────────────────────────────
+// STEP 2a: STOP-LOSS THRESHOLD GATE — refuse re-execution of already-failed tasks
+// ─────────────────────────────────────────────────────────────────────────────
+const candidateMeta = candidateTask.meta || {};
+if (candidateMeta.stop_loss_triggered === true) {
+    process.stdout.write(JSON.stringify({
+        ok: false,
+        step: 'stop_loss_threshold_gate',
+        error: 'STOP_LOSS_ALREADY_TRIGGERED: task has failed before and requires human review',
+        task_id: candidateTask.id,
+        session_id: candidateTask.session_id,
+        owner: ownerArg,
+        stop_loss: {
+            triggered: true,
+            reason: candidateMeta.stop_loss_reason,
+            step: candidateMeta.stop_loss_step,
+            at: candidateMeta.stop_loss_at,
+            failure_type: candidateMeta.stop_loss_failure_type,
+            run_id: candidateMeta.stop_loss_run_id,
+        },
+        next_action: 'human_review_required',
+        notes: [
+            'Task has stop_loss_triggered=true — triage refuses to re-execute automatically',
+            'A human operator must review the task, clear the stop-loss flag, and re-queue',
+            'To clear: manually update task meta_json.stop_loss_triggered=false and set status=todo',
+        ],
+    }, null, 2) + '\n');
+    process.exit(0);   // exit 0 — this is an expected operational outcome not a crash
+}
+
 const workSessionId = candidateTask.session_id;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -263,8 +359,6 @@ if (!step3.ok) {
 const taskResult = step3.parsed;
 const poppedTask = taskResult && taskResult.task;
 
-// tasks:next is session-scoped AND first-match — it's possible another process
-// claimed the task between our peek and pop (unlikely but safe to guard).
 if (!poppedTask) {
     process.stdout.write(JSON.stringify({
         ok: true,
@@ -284,22 +378,11 @@ if (!poppedTask) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 4: Execute the task via openclaw:run
-//
-// openclaw_cli_v1.js reads a JSON file — it does NOT accept --session.
-// We write a runtime request file with session_id injected from the popped task.
-// Written to requests/_runtime/ which is gitignored.
 // ─────────────────────────────────────────────────────────────────────────────
-
-// Ensure runtime dir exists
 if (!fs.existsSync(RUNTIME_DIR)) {
     fs.mkdirSync(RUNTIME_DIR, { recursive: true });
 }
 
-// Build user_goal from task payload
-// Uses 'checklist' to target OPS_INTERNAL (router keyword 'checklist')
-// OPS_INTERNAL has governance_required=true so it will be GATED unless override.
-// For governance triage the correct intent is GOVERNANCE_REVIEW (audit/review keywords).
-// We phrase the goal to match GOVERNANCE_REVIEW deterministically.
 const taskGoal = [
     `Audit and review this governance task: "${poppedTask.title}".`,
     poppedTask.details ? `Details: ${poppedTask.details}.` : '',
@@ -311,7 +394,7 @@ const runtimeRequest = {
     request_id: 'req_triage_exec_' + poppedTask.id.slice(-8) + '_' + Date.now(),
     ts: new Date().toISOString(),
     initiator: 'system',
-    session_id: workSessionId,    // Pin to the task's session so artifacts/actions link correctly
+    session_id: workSessionId,
     user_goal: taskGoal,
     constraints: {
         no_public_exposure: true,
@@ -331,21 +414,19 @@ const runtimeRequest = {
     },
 };
 
-// Write temp file — safe because requests/_runtime/ is gitignored
 const runtimeFile = path.join(RUNTIME_DIR, `triage_${Date.now()}.json`);
 fs.writeFileSync(runtimeFile, JSON.stringify(runtimeRequest, null, 2), 'utf8');
 
 const step4 = runScript('openclaw_run_task', [
     CLI.run,
     runtimeFile,
-    // No --founder (governance triage is not a founder-mode bypass flow)
-    // Session is injected into the JSON file above
 ], 90000);
 
-// Clean up temp file immediately after run — audit trail is in the DB
+// Clean temp file immediately — audit trail is in DB
 try { fs.unlinkSync(runtimeFile); } catch (_) { /* ignore */ }
 
 if (!step4.ok) {
+    // Hard fail: spawn error or JSON parse error (not GATED/BLOCKED/REJECTED — those exit 0)
     fatal('openclaw_run_task', step4.error || 'openclaw:run failed on task', {
         task_id: poppedTask.id,
         session_id: workSessionId,
@@ -356,6 +437,66 @@ if (!step4.ok) {
 const runResult = step4.parsed;
 
 // ─────────────────────────────────────────────────────────────────────────────
+// STEP 4a: STOP-LOSS GATE — classify dispatch result
+// openclaw:run exits 0 for GATED/BLOCKED/REJECTED — we must inspect the JSON
+// ─────────────────────────────────────────────────────────────────────────────
+const stopLossClassification = classifyStopLoss(runResult);
+
+if (stopLossClassification !== null) {
+    // Trigger stop-loss: call tasks:stop-loss CLI to update DB atomically
+    const runId = runResult && runResult.run_id;
+    const slReason = stopLossClassification.reason.slice(0, 240);
+
+    const slArgs = [
+        CLI.stopLoss,
+        poppedTask.id,
+        '--reason', slReason,
+        '--step', 'openclaw_run_task',
+        '--owner', ownerArg,
+        '--session', workSessionId,
+        '--failure-type', stopLossClassification.failure_type,
+    ];
+    if (runId) { slArgs.push('--run-id', runId); }
+
+    const slResult = runScript('tasks_stop_loss', slArgs, 15000);
+
+    // Build consolidated stop-loss output (exit 0 — this is an operational outcome)
+    process.stdout.write(JSON.stringify({
+        ok: false,
+        step: 'stop_loss',
+        task_id: poppedTask.id,
+        session_id: workSessionId,
+        owner: ownerArg,
+        failure_summary: {
+            failure_type: stopLossClassification.failure_type,
+            reason: stopLossClassification.reason,
+            dispatch_state: runResult && runResult.dispatch && runResult.dispatch.state,
+            run_id: runId,
+        },
+        stop_loss_applied: slResult.ok,
+        stop_loss_action_id: slResult.ok && slResult.parsed ? slResult.parsed.action_id : null,
+        stop_loss_cli_error: !slResult.ok ? (slResult.error || null) : null,
+        run: {
+            status: runResult.status,
+            run_id: runId,
+            intent: runResult.route && runResult.route.intent,
+            dispatch_state: runResult.dispatch && runResult.dispatch.state,
+            agent: runResult.dispatch && runResult.dispatch.agent,
+            repair_attempted: runResult.dispatch && runResult.dispatch.repair_attempted,
+            repair_succeeded: runResult.dispatch && runResult.dispatch.repair_succeeded,
+        },
+        next_action: 'human_review_required',
+        notes: [
+            `Stop-loss triggered: ${stopLossClassification.failure_type}`,
+            'Task marked blocked — will not auto-retry until stop-loss is manually cleared',
+            'To remediate: review task in ledger, clear stop_loss_triggered flag, set status=todo',
+        ],
+    }, null, 2) + '\n');
+
+    process.exit(0);   // exit 0 — operational outcome (not a crash)
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // STEP 5: Retrieve artefact (non-stub, 1 retry)
 // ─────────────────────────────────────────────────────────────────────────────
 function fetchArtifact(sid) {
@@ -364,7 +505,6 @@ function fetchArtifact(sid) {
 
 let step5a = fetchArtifact(workSessionId);
 
-// Hard fail only on CLI-level error (spawnError, parse error) — not on null result
 if (!step5a.ok) {
     fatal('artifacts_latest', step5a.error, {
         session_id: workSessionId,
@@ -391,7 +531,7 @@ process.stdout.write(JSON.stringify({
     ok: true,
     owner: ownerArg,
     session_id: workSessionId,
-    triage_session_id: sessionId,        // session created for this triage run
+    triage_session_id: sessionId,
     task: poppedTask,
     task_audit: {
         task_update_action_id: taskResult.task_update_action_id,
@@ -408,6 +548,7 @@ process.stdout.write(JSON.stringify({
         repair_succeeded: runResult.dispatch && runResult.dispatch.repair_succeeded,
         ledger_error: runResult.dispatch && runResult.dispatch.ledger_error,
     },
+    stop_loss: null,   // null = clean run, no stop-loss triggered
     artifact: artifactResult ? artifactResult.artifact : null,
     artifact_attempts: artifactAttempts,
     artifact_retry_used: artifactRetryUsed,
@@ -416,6 +557,7 @@ process.stdout.write(JSON.stringify({
         '--no-stub enforced on tasks:oldest, tasks:next, and artifacts:latest',
         'Audit trail written by constituent CLIs (tasks:next, openclaw:run)',
         'Temp runtime request file written and immediately deleted after openclaw:run',
+        'Stop-loss gate: clean run (no REJECTED/BLOCKED/GATED/REPAIR_FAILED)',
         artifactResult && artifactResult.artifact
             ? 'Artefact retrieved successfully'
             : 'artifact:null — dispatch artefacts carry [stub,dispatch] tags; use artifacts:latest SESSION_ID (no --no-stub) to retrieve content',

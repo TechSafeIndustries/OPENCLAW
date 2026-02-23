@@ -9,6 +9,7 @@
 > | `workflow:founder-marketing-draft` | Founder marketing draft (MARKETING_INTERNAL → marketing_pr agent) | §5 |
 > | `workflow:governance-triage` | **Execution loop** — pop oldest TODO, run OpenClaw, retrieve artefact | §6 |
 > | `workflow:task-close` | **Close loop** — transition doing → done, write task_close audit action | §7 |
+> | `tasks:stop-loss` | **Stop-loss CLI** — mark task blocked, write stop_loss audit action | §8 |
 
 > **⚠️ SHELL WARNING — Read first**
 >
@@ -596,3 +597,137 @@ npm run workflow:governance-triage    → pops oldest TODO → doing, runs OpenC
 npm run workflow:task-close -- <id>   → closes doing → done, writes audit
 ```
 
+---
+
+## 8. Stop-Loss Governance Gates
+
+> **Stop-loss gates prevent repeated failed executions and force human review.**
+> They are evaluated per-run (no polling, no loops) by `workflow:governance-triage`.
+
+### Architecture
+
+Two independent gates, evaluated in order:
+
+| Gate | When | Checks | Action if triggered |
+|---|---|---|---|
+| **Threshold gate** (step 2a) | Before pop — after finding candidate task | `task.meta.stop_loss_triggered === true` | Refuse to pop/execute; output `ok:false, next_action:human_review_required` |
+| **Post-execution gate** (step 4a) | After `openclaw:run` completes | `dispatch.state` classification (see below) | Pop already done; call `tasks:stop-loss` to mark blocked; output `ok:false` |
+
+### Stop-Loss Trigger Conditions
+
+| Condition | dispatch.state | Failure type |
+|---|---|---|
+| Contract validation failed, repair exhausted | `REJECTED` | `REJECTED` |
+| Router keyword gate hard-block | `BLOCKED` | `BLOCKED` |
+| Router deny-path (GATE_BLOCK_KEYWORDS) | `BLOCKED` | `BLOCKED` |
+| Governance required, no override, stuck permanently | `GATED` | `GATED` |
+| Dispatch DISPATCHED but repair attempted and failed (no artifact) | `DISPATCHED` | `REPAIR_FAILED` |
+
+### tasks:stop-loss CLI
+
+> **Command:** `npm run tasks:stop-loss -- <task_id> --reason "<text>" --step "<step>" [options]`
+>
+> Marks a task as `blocked` and writes a `stop_loss` audit action. Called automatically by
+> `workflow:governance-triage` on failure. May also be called by operators manually.
+
+#### Flags
+
+| Flag | Required | Default | Description |
+|---|---|---|---|
+| `<task_id>` | ✅ | — | Task to stop-loss |
+| `--reason <text>` | ✅ | — | Short failure reason (max 240 chars) |
+| `--step <step>` | ✅ | — | Workflow step where failure occurred |
+| `--owner <agent>` | — | `cos` | Responsible agent |
+| `--session <id>` | — | inferred | Override session for audit row |
+| `--run-id <id>` | — | `null` | run_id at point of failure |
+| `--failure-type <type>` | — | `null` | `GATED\|BLOCKED\|REJECTED\|REPAIR_FAILED` |
+
+#### Guard
+
+If `task.meta_json.stop_loss_triggered=true` already → exits 1 with `ALREADY_TRIGGERED`. No double-marking.
+
+#### Writes (atomic transaction)
+
+| Write | Detail |
+|---|---|
+| `tasks` | `status=blocked`, `meta_json` gains stop-loss block: `stop_loss_triggered, stop_loss_reason, stop_loss_step, stop_loss_at, stop_loss_owner, stop_loss_run_id, stop_loss_failure_type` |
+| `actions` | `type=stop_loss`, `status=ok`, `actor=ops` — distinct from `task_update` |
+
+#### Stop-loss output shape
+
+```json
+{ "ok": true, "task_id": "...", "session_id": "...", "owner": "cos",
+  "before": { "status": "doing", ... },
+  "after":  { "status": "blocked", "stop_loss_triggered": true, "stop_loss_reason": "...",
+               "stop_loss_step": "openclaw_run_task", "stop_loss_at": "<ISO>",
+               "stop_loss_failure_type": "BLOCKED" },
+  "action_id": "stop_loss_<timestamp>" }
+```
+
+### Triage stop-loss output shapes
+
+**Post-execution gate triggered:**
+```json
+{ "ok": false, "step": "stop_loss", "task_id": "...", "session_id": "...",
+  "failure_summary": { "failure_type": "BLOCKED", "reason": "...", "dispatch_state": "BLOCKED", "run_id": "..." },
+  "stop_loss_applied": true, "stop_loss_action_id": "stop_loss_<ts>",
+  "next_action": "human_review_required" }
+```
+
+**Threshold gate triggered (already stop-lossed):**
+```json
+{ "ok": false, "step": "stop_loss_threshold_gate",
+  "error": "STOP_LOSS_ALREADY_TRIGGERED: task has failed before and requires human review",
+  "stop_loss": { "triggered": true, "reason": "...", "step": "...", "at": "<ISO>", "failure_type": "BLOCKED" },
+  "next_action": "human_review_required" }
+```
+
+### Remediation Steps
+
+When `next_action: human_review_required`:
+
+1. **Inspect the task**
+   ```cmd
+   npm run tasks:get -- <task_id>
+   ```
+   Check `meta.stop_loss_reason`, `meta.stop_loss_failure_type`, `meta.stop_loss_step`.
+
+2. **Inspect the audit trail**
+   ```cmd
+   REM Check stop_loss action rows in ledger directly
+   node -e "const D=require('better-sqlite3');const db=new D('db/openclaw_ledger.db',{readonly:true});console.log(JSON.stringify(db.prepare('SELECT id,type,status,reason,ts FROM actions WHERE type=?').all('stop_loss'),null,2));db.close()"
+   ```
+
+3. **Resolve the root cause**
+   - `BLOCKED`: Task title or goal contains a forbidden keyword. Revise the task.
+   - `GATED`: Requires manual governance approval before OpenClaw can dispatch.
+   - `REJECTED`: Contract validation failed. Inspect `stop_loss_reason` for field errors.
+   - `REPAIR_FAILED`: LLM output failed twice. May need clearer prompt or spec revision.
+
+4. **Clear the stop-loss and re-queue** (after resolution)
+   ```cmd
+   REM Manually clear stop-loss: update meta_json in SQLite
+   REM Then set status=todo to re-queue
+   REM There is no automated clear CLI in v1 — requires operator judgement.
+   ```
+
+### Full Governance Execution Loop
+
+```
+workflow:governance-triage   → pop oldest TODO → doing
+                             → [stop_loss gate]  → if BLOCKED/GATED/REJECTED: mark blocked, exit ok:false
+                             → [threshold gate]  → if already stop-lossed: refuse, exit ok:false
+                             → OpenClaw runs, artefact retrieved
+
+workflow:task-close <id>     → close doing → done, write task_close audit
+
+[on stop-loss] tasks:stop-loss <id> --reason "..." --step "..."   → mark blocked, write stop_loss audit
+```
+
+### Invariants
+
+- No polling, no loops — stop-loss is evaluated **per-run only**.
+- Both gates exit code `0` (operational outcome, not a crash).
+- `ok:false` in output signals stop-loss, not a CLI error.
+- Stop-loss CLI is **idempotent-guarded** — cannot double-trigger (`ALREADY_TRIGGERED` guard).
+- All writes via `tasks_stop_loss_cli_v1.js` — no direct DB writes in workflow layer.

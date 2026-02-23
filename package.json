@@ -25,6 +25,7 @@
     "tasks:purge-stub": "node app/tasks_purge_stub_cli_v1.js",
     "tasks:oldest": "node app/tasks_oldest_cli_v1.js",
     "tasks:close": "node app/tasks_close_cli_v1.js",
+    "tasks:stop-loss": "node app/tasks_stop_loss_cli_v1.js",
     "workflow:runbook-check": "node app/workflow_runbook_check_v1.js",
     "workflow:governance-triage": "node app/workflow_governance_triage_v1.js",
     "workflow:task-close": "node app/workflow_task_close_v1.js",

@@ -109,6 +109,50 @@ try {
     process.exit(1);
 }
 
+// ── Router error guard ────────────────────────────────────────────────────────
+// routeRequest may return { error: { code, ... } } for:
+//   GOVERNANCE_GATE_DENIED — keyword matched GATE_BLOCK_KEYWORDS (deny path)
+//   ROUTING_RULE_MISSING   — intent has no routing rule in DB
+//   VALIDATION_FAILED      — input validation error
+//   DB_OPEN_FAILED         — DB open error
+//
+// These are NOT dispatched — passing them to dispatch() causes crash.
+// Output a structured BLOCKED state JSON so callers (workflow:governance-triage)
+// can classify via their stop-loss gate.  Exit 0 (resolved terminal state).
+if (routeOutput && routeOutput.error) {
+    const routerErrCode = routeOutput.error.code || 'ROUTER_ERROR';
+    const isGateBlock = routerErrCode === 'GOVERNANCE_GATE_DENIED';
+
+    process.stdout.write(JSON.stringify({
+        status: 'ROUTER_GATE_BLOCKED',
+        run_id,
+        session_id: effectiveSessionId,
+        route: {
+            intent: null,
+            gate_decision: isGateBlock ? 'deny' : 'blocked',
+            requires_governance_review: true,
+            primary_agent: null,
+        },
+        dispatch: {
+            state: 'BLOCKED',
+            agent: null,
+            next_step: 'revise_request',
+            intent: null,
+            reason: `Router error: ${routerErrCode}. ${JSON.stringify(routeOutput.error.details || routeOutput.error.gate_flags || '')}`,
+            override_governance: false,
+            artifact_id: null,
+            ledger_error: null,
+            contract: null,
+            repair_attempted: false,
+            repair_succeeded: false,
+            draft_only: false,
+            governance_bypassed: null,
+            router_error: routeOutput.error,
+        },
+    }, null, 2) + '\n');
+    process.exit(0);
+}
+
 // ── Dispatch ──────────────────────────────────────────────────────────────────
 let dispatchResult;
 try {
