@@ -1,0 +1,42 @@
+{
+    "_comment": [
+        "CDMS Write Policy v1 — Controls all Drive API write operations.",
+        "allowlistRoots: ONLY these path prefixes are legal targets. Enforced at runtime before any Drive call.",
+        "forbiddenTargets: Hard-blocked destination names.",
+        "maxBatchSize: Max files in a single approved batch.",
+        "requireDryRun: Must complete dry-run pass before live execute is permitted.",
+        "requireHumanApproval: HITL gate — no live execute without ledger-logged approval.",
+        "stopLoss: Auto-abort thresholds evaluated during execute loop."
+    ],
+    "version": "1.0",
+    "allowlistRoots": [
+        "TSI-01 DocControl.GOOGLE/"
+    ],
+    "forbiddenTargets": [
+        "My Drive",
+        "Computers",
+        "Shared with me",
+        "Trash"
+    ],
+    "maxBatchSize": 10,
+    "requireDryRun": true,
+    "requireHumanApproval": true,
+    "allowRename": false,
+    "allowCreateFolders": true,
+    "stopLoss": {
+        "maxFailures": 3,
+        "abortOnPermissionError": true,
+        "abortOnUnexpectedRoot": true
+    },
+    "allowedScopes": [
+        "https://www.googleapis.com/auth/drive"
+    ],
+    "auditRequired": true,
+    "notes": {
+        "allowlistRoots": "Any ProposedTSI01Path not starting with an allowed root will HARD ABORT before touching Drive.",
+        "stopLoss": "If failures exceed maxFailures mid-batch, the entire batch halts and a receipt is written with error state.",
+        "requireHumanApproval": "execute action checks cdms_approvals ledger table for decision=approve before any Drive API call.",
+        "allowRename": "Disabled by default. Must be explicitly passed as --allow-rename flag AND confirmed in approval record.",
+        "allowCreateFolders": "Enabled — folders are created as needed in the target path via idempotent findOrCreate."
+    }
+}

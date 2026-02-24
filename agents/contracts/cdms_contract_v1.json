@@ -1,0 +1,116 @@
+{
+    "name": "CDMS-01",
+    "version": "v1.0",
+    "description": "Controlled Document Management System agent. Scans, plans, and executes Drive document moves under strict HITL governance.",
+    "policy_file": "policy/cdms_write_v1.json",
+    "actions": [
+        "scan",
+        "plan",
+        "execute",
+        "verify"
+    ],
+    "input_schema": {
+        "action": {
+            "type": "string",
+            "enum": [
+                "scan",
+                "plan",
+                "execute",
+                "verify"
+            ],
+            "required": true,
+            "description": "Which CDMS phase to run."
+        },
+        "wave": {
+            "type": "string",
+            "enum": [
+                "high",
+                "med",
+                "low",
+                "all"
+            ],
+            "required": false,
+            "description": "Confidence wave to scope plan or execute. Required for plan/execute."
+        },
+        "batch_id": {
+            "type": "string",
+            "required": false,
+            "description": "UUID of a previously generated batch. Required for execute and verify."
+        },
+        "allow_rename": {
+            "type": "boolean",
+            "required": false,
+            "default": false,
+            "description": "If true, rename operations are included. Must also be approved in ledger."
+        },
+        "allow_create_folders": {
+            "type": "boolean",
+            "required": false,
+            "default": true,
+            "description": "If true, missing target folders are created automatically via ensureFolderPath."
+        },
+        "dry_run": {
+            "type": "boolean",
+            "required": false,
+            "default": true,
+            "description": "If true (default), no Drive writes occur. Validates allowlist + batch only."
+        },
+        "owner": {
+            "type": "string",
+            "required": false,
+            "description": "Identity of the approving human. Required for execute and verify."
+        }
+    },
+    "output_schema": {
+        "ok": {
+            "type": "boolean",
+            "description": "True if the action completed without a fatal error."
+        },
+        "summary": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Human-readable summary of what CDMS did."
+        },
+        "artifacts": {
+            "type": "array",
+            "description": "List of output files written. Each item: { type, path, row_count }.",
+            "items": {
+                "type": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "row_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "recommended_next_command": {
+            "type": "string",
+            "description": "The next npm workflow script the operator should run."
+        },
+        "ledger_writes": {
+            "type": "array",
+            "description": "Summary of rows written to ledger. Each item: { table, id, type }."
+        }
+    },
+    "requires_hitl_for": [
+        "execute"
+    ],
+    "step_sequence": {
+        "1_scan": "Build or refresh index from inventory CSVs.",
+        "2_plan": "Generate MoveBatch CSV for specified wave.",
+        "3_human_review": "Human approves or rejects batch — recorded in ledger.",
+        "4_execute": "Dry-run first (default). Live execute requires approval + dry_run=false.",
+        "5_verify": "Post-run checks: file exists at target, removed from source, receipt written."
+    },
+    "forbidden_outputs": [
+        "delete_file",
+        "purge_drive",
+        "share_externally",
+        "change_permissions",
+        "trash_file"
+    ],
+    "notes": "CDMS-01 is write-gated. Plan and scan are always safe (read-only). Execute is blocked by policy until a ledger approval record exists for the batch_id. Allowlist is enforced at both plan time and execute time."
+}

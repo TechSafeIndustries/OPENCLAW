@@ -1,0 +1,54 @@
+{
+    "agent": "cdms",
+    "version": "v1.0",
+    "required_fields": [
+        "agent",
+        "version",
+        "intent",
+        "action",
+        "ok",
+        "summary",
+        "artifacts",
+        "ledger_writes"
+    ],
+    "input_schema": {
+        "action": "enum: scan | plan | execute | verify",
+        "wave": "string: high | med | low | all (required for plan/execute/verify)",
+        "batch_id": "string — UUID of an existing batch (required for execute/verify)",
+        "allow_rename": "boolean — default false. Must also be approved in ledger.",
+        "allow_create_folders": "boolean — default true.",
+        "dry_run": "boolean — default true. Set false only for live execute.",
+        "owner": "string — identity of approver (required for execute/verify)"
+    },
+    "output_sections": {
+        "ok": "boolean — true if action completed without fatal error",
+        "summary": "string (max 500 chars) — what CDMS did",
+        "artifacts": "array — { type, path, row_count } for each output file written",
+        "recommended_next_command": "string — next npm script to run",
+        "ledger_writes": "array — { table, id, type } for each DB row written"
+    },
+    "allowed_actions": [
+        "scan",
+        "plan",
+        "execute_dry_run",
+        "execute_live",
+        "verify"
+    ],
+    "requires_hitl_for": [
+        "execute_live"
+    ],
+    "requires_prior_step": {
+        "plan": "scan",
+        "execute_dry_run": "plan",
+        "execute_live": "execute_dry_run + human_approval",
+        "verify": "execute_live"
+    },
+    "policy_file": "policy/cdms_write_v1.json",
+    "forbidden_outputs": [
+        "delete_file",
+        "purge_drive",
+        "share_externally",
+        "change_permissions"
+    ],
+    "notes": "CDMS is a write-gated agent. It plans (safe), dry-runs (safe), then requires explicit HITL approval in the ledger before any live Drive API write. Allowlist is enforced at both plan and execute time."
+}
