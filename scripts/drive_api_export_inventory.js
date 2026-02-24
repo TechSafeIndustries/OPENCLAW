@@ -62,45 +62,63 @@ function writeLine(fd, cols) {
     fs.writeSync(fd, cols.map(csvEscape).join(',') + '\n');
 }
 
-async function listAllFiles(drive, driveId, driveName) {
-    const rows = [];
-    let token = undefined;
-    let page = 0;
+async function listAllFiles(drive, driveId, driveName, fd) {
+    let pageToken = undefined;
+    let pageNum = 0;
+    let rowCount = 0;
+    const mimeCounts = {};
 
     do {
-        page++;
-        process.stdout.write(`\r  [${driveName}] page ${page} (${rows.length} files so far)...`);
+        pageNum++;
+        process.stdout.write(`\r  [${driveName}] page ${pageNum} (${rowCount} files so far)...`);
 
-        const res = await drive.files.list({
+        // Build params — only include pageToken when we have one (never pass undefined)
+        const params = {
             corpora: 'drive',
             driveId,
             includeItemsFromAllDrives: true,
             supportsAllDrives: true,
             pageSize: 1000,
-            pageToken: token,
+            q: 'trashed = false',
+            orderBy: 'folder,name',
             fields: 'nextPageToken, files(id,name,mimeType,modifiedTime,size,parents,trashed,driveId)',
-        });
+        };
+        if (pageToken) params.pageToken = pageToken;
 
+        const res = await drive.files.list(params);
         const files = res.data.files || [];
+
+        // Stream-write this page directly to the open CSV fd
         for (const f of files) {
-            rows.push({
-                DriveName: driveName,
-                DriveId: driveId,
-                FileId: f.id || '',
-                Name: f.name || '',
-                MimeType: f.mimeType || '',
-                ModifiedTime: f.modifiedTime || '',
-                Size: f.size || '0',
-                Parents: (f.parents || []).join('|'),
-                Trashed: String(f.trashed || false),
-            });
+            const mime = f.mimeType || '';
+            const parents = (f.parents || []).join('|');
+            writeLine(fd, [
+                driveName,
+                driveId,
+                f.id || '',
+                f.name || '',
+                mime,
+                f.modifiedTime || '',
+                f.size || '0',
+                parents,
+                String(f.trashed || false),
+            ]);
+            rowCount++;
+            mimeCounts[mime] = (mimeCounts[mime] || 0) + 1;
         }
 
-        token = res.data.nextPageToken;
-    } while (token);
+        pageToken = res.data.nextPageToken;
+    } while (pageToken);
 
     process.stdout.write('\n');
-    return rows;
+
+    // Top 10 mimeTypes
+    const topMimes = Object.entries(mimeCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10)
+        .map(([mime, count]) => ({ mime, count }));
+
+    return { rows: rowCount, pages: pageNum, topMimes };
 }
 
 // ── QC report update ──────────────────────────────────────────────────────────
@@ -200,62 +218,59 @@ async function main() {
             continue;
         }
 
-        let rows;
+        // Open CSV for streaming — header written up-front, rows streamed per-page
+        let fd;
         try {
-            rows = await listAllFiles(drive, target.driveId, target.name);
+            fd = fs.openSync(csvPath, 'w');
+            writeLine(fd, ['DriveName', 'DriveId', 'FileId', 'Name', 'MimeType', 'ModifiedTime', 'Size', 'Parents', 'Trashed']);
+        } catch (openErr) {
+            console.log(`  STATUS: ERROR opening CSV - ${openErr.message}`);
+            results.push({ slug: target.slug, name: target.name, status: 'ERROR', files: 0, error: openErr.message });
+            continue;
+        }
+
+        let result;
+        try {
+            result = await listAllFiles(drive, target.driveId, target.name, fd);
         } catch (err) {
+            fs.closeSync(fd);
             console.log(`  STATUS: ERROR - ${err.message}`);
             if (err.message && err.message.includes('403')) {
                 console.log(`  ACTION: Service account lacks Viewer access. Add SERVICE_ACCOUNT_EMAIL to this Shared Drive.`);
             }
             results.push({ slug: target.slug, name: target.name, status: 'ERROR', files: 0, error: err.message });
-            fs.writeFileSync(csvPath,
-                'DriveName,DriveId,FileId,Name,MimeType,ModifiedTime,Size,Parents,Trashed\n', 'utf8');
             fs.writeFileSync(jsonPath,
                 JSON.stringify({ slug: target.slug, name: target.name, status: 'ERROR', error: err.message, fileCount: 0 }, null, 2), 'utf8');
             continue;
         }
-
-        // Write CSV
-        const fd = fs.openSync(csvPath, 'w');
-        writeLine(fd, ['DriveName', 'DriveId', 'FileId', 'Name', 'MimeType', 'ModifiedTime', 'Size', 'Parents', 'Trashed']);
-        for (const row of rows) {
-            writeLine(fd, [
-                row.DriveName, row.DriveId, row.FileId, row.Name,
-                row.MimeType, row.ModifiedTime, row.Size, row.Parents, row.Trashed,
-            ]);
-        }
         fs.closeSync(fd);
 
-        // MIME breakdown for summary
-        const mimeCounts = {};
-        for (const r of rows) {
-            mimeCounts[r.MimeType] = (mimeCounts[r.MimeType] || 0) + 1;
-        }
-        const topMimes = Object.entries(mimeCounts)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 10)
-            .map(([mime, count]) => ({ mime, count }));
+        const { rows: fileCount, pages, topMimes } = result;
+        const status = fileCount > 0 ? 'OK' : 'NO_FILES';
 
+        // Write summary JSON
         const summary = {
             slug: target.slug,
             name: target.name,
             driveId: target.driveId,
-            status: rows.length > 0 ? 'OK' : 'NO_FILES',
-            fileCount: rows.length,
+            status,
+            fileCount,
+            pagesFetched: pages,
             exportedAt: new Date().toISOString(),
             topMimeTypes: topMimes,
         };
         fs.writeFileSync(jsonPath, JSON.stringify(summary, null, 2), 'utf8');
 
-        const status = rows.length > 0 ? 'OK' : 'NO_FILES';
-        console.log(`  OK drive=${target.slug} files=${rows.length} status=${status}`);
-        if (rows.length === 0) {
-            console.log(`  WARNING: 0 files returned. Either drive is empty or service account lacks access.`);
+        // Per-drive console output
+        console.log(`  OK drive=${target.slug} files=${fileCount} pages=${pages} status=${status}`);
+        console.log(`  Top mimeTypes:`);
+        topMimes.slice(0, 5).forEach(m => console.log(`    ${m.count.toString().padStart(5)}  ${m.mime}`));
+        if (fileCount === 0) {
+            console.log(`  WARNING: 0 files returned. Drive may be empty or service account needs access.`);
             console.log(`  ACTION: Ensure SERVICE_ACCOUNT_EMAIL is added as Viewer on "${target.name}".`);
         }
 
-        results.push({ slug: target.slug, name: target.name, status, files: rows.length });
+        results.push({ slug: target.slug, name: target.name, status, files: fileCount, pages });
     }
 
     // QC report
