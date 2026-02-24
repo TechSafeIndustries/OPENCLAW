@@ -120,3 +120,7 @@ openclaw-auth.json
 *-auth.json
 *.service-account.json
 *-credentials.json
+
+exports/
+exports/**
+

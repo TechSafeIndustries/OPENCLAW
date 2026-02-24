@@ -44,7 +44,8 @@
     "repair:test": "node app/repair_smoke_test_v1.js",
     "artifacts:list": "node app/artifacts_list_cli_v1.js",
     "artifacts:get": "node app/artifacts_get_cli_v1.js",
-    "artifacts:latest": "node app/artifacts_latest_cli_v1.js"
+    "artifacts:latest": "node app/artifacts_latest_cli_v1.js",
+    "drive:export-corporate": "powershell -NonInteractive -ExecutionPolicy Bypass -File scripts/export_corporate_inventory.ps1"
   },
   "dependencies": {
     "@google-cloud/bigquery": "^7.9.3",
