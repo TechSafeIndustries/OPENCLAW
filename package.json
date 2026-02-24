@@ -51,7 +51,8 @@
     "workflow:cdms-plan-high": "node agents/cdms_agent_v1.js --action plan --wave high",
     "workflow:cdms-plan-med": "node agents/cdms_agent_v1.js --action plan --wave med",
     "workflow:cdms-plan-low": "node agents/cdms_agent_v1.js --action plan --wave low",
-    "workflow:cdms-help": "node agents/cdms_agent_v1.js --help"
+    "workflow:cdms-help": "node agents/cdms_agent_v1.js --help",
+    "workflow:cdms-human-review": "node scripts/cdms_human_review.js"
   },
   "dependencies": {
     "@google-cloud/bigquery": "^7.9.3",
