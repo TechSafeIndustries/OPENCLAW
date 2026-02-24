@@ -237,6 +237,22 @@ function main() {
     fs.writeFileSync(receiptPath, JSON.stringify(receipt, null, 2), 'utf8');
     console.log(`\nReceipt written: ${receiptPath}`);
 
+    // ── Write run sheet CSV ───────────────────────────────────────────────────
+    const RUN_SHEET_HEADERS = ['CurrentPath', 'CurrentName', 'ProposedTSI01Path', 'ProposedName'];
+    const escCsv = (v) => {
+        const s = v == null ? '' : String(v);
+        return (s.includes(',') || s.includes('"') || s.includes('\n'))
+            ? '"' + s.replace(/"/g, '""') + '"'
+            : s;
+    };
+    const runSheetLines = [
+        RUN_SHEET_HEADERS.join(','),
+        ...rows.map(r => RUN_SHEET_HEADERS.map(h => escCsv(r[h])).join(',')),
+    ];
+    const runSheetPath = path.join(RECEIPT_DIR, `RunSheet_${ts}.csv`);
+    fs.writeFileSync(runSheetPath, runSheetLines.join('\n') + '\n', 'utf8');
+    console.log(`RunSheet written: ${runSheetPath}`);
+
     // ── Ledger entry ──────────────────────────────────────────────────────────
     const now = nowIso();
     const sessionId = 'cdms_execute_' + uuid();
