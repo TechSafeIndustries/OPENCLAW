@@ -141,9 +141,16 @@ async function main() {
         process.exit(1);
     }
 
-    // Auth — service account, read-only scope
+    // Auth — service account, read-only scope.
+    // Explicitly pass projectId from the SA key file to prevent GoogleAuth from
+    // falling back to the ambient gcloud project (which may be a different org project).
+    const saKey = JSON.parse(fs.readFileSync(credsPath, 'utf8'));
+    const saProjectId = saKey.project_id || '';
+    console.log(`  Auth: ${saKey.client_email}  project: ${saProjectId}`);
+
     const auth = new google.auth.GoogleAuth({
         keyFile: credsPath,
+        projectId: saProjectId,
         scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     });
     const drive = google.drive({ version: 'v3', auth });
