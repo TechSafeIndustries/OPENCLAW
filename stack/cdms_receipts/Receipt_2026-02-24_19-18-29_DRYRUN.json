@@ -1,0 +1,101 @@
+{
+  "mode": "DRYRUN",
+  "batch_ref": "MoveBatch_high_2026-02-24_18-48-47",
+  "batch_path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\MoveBatch_high_2026-02-24_18-48-47.csv",
+  "owner": "cos",
+  "ts": "2026-02-24T19:18:29.825Z",
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "row_count": 8,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "allowlist_root": "TSI-01 DocControl.GOOGLE/",
+    "approval_id": "ee881d62-7706-490c-b47e-2e16860153a7",
+    "approved_by": "cos",
+    "approval_ts": "2026-02-24T19:02:54.328Z"
+  },
+  "planned_operations": [
+    {
+      "source_drive": "",
+      "current_name": "SECURITY & ACCESS CONTROL (OS-07-F).gdoc",
+      "current_path": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 07 - OS Change Log (Master)\\9. SECURITY & ACCESS CONTROL (OS-07-F)",
+      "proposed_path": "TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\",
+      "proposed_name": "SECURITY & ACCESS CONTROL (OS-07-F).gdoc",
+      "rename_reason": "Decision A canonical security location",
+      "confidence": "High",
+      "action": "MOVE"
+    },
+    {
+      "source_drive": "",
+      "current_name": "ACP v3 Security Policy.gdoc",
+      "current_path": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\6. SECURITY",
+      "proposed_path": "TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\",
+      "proposed_name": "ACP v3 Security Policy.gdoc",
+      "rename_reason": "Decision A canonical security location",
+      "confidence": "High",
+      "action": "MOVE"
+    },
+    {
+      "source_drive": "",
+      "current_name": "Security and Continuity Rules (OS-06-C).gdoc",
+      "current_path": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 06 - AI-Integrated Workflows (Draft)\\4. Security + Continuity Rules (OS-06-C)",
+      "proposed_path": "TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\",
+      "proposed_name": "Security and Continuity Rules (OS-06-C).gdoc",
+      "rename_reason": "Decision A canonical security location",
+      "confidence": "High",
+      "action": "MOVE"
+    },
+    {
+      "source_drive": "",
+      "current_name": "TSI — ZERO TRUST & ROLE SEGREGATION MODEL.gdoc",
+      "current_path": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.1 Zero Trust   Role Segregation",
+      "proposed_path": "TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\",
+      "proposed_name": "TSI — ZERO TRUST & ROLE SEGREGATION MODEL.gdoc",
+      "rename_reason": "Decision A canonical security location",
+      "confidence": "High",
+      "action": "MOVE"
+    },
+    {
+      "source_drive": "",
+      "current_name": "TSI — WORKER & CONTRACTOR SEPARATION MODEL v1.0 MASTER.gdoc",
+      "current_path": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.3 Worker & Contractor Separation",
+      "proposed_path": "TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\",
+      "proposed_name": "TSI — WORKER & CONTRACTOR SEPARATION MODEL v1.0 MASTER.gdoc",
+      "rename_reason": "Decision A canonical security location",
+      "confidence": "High",
+      "action": "MOVE"
+    },
+    {
+      "source_drive": "",
+      "current_name": "TSI — DATA PRIVACY RULES v1.0 MASTER.gdoc",
+      "current_path": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.2 Data Privacy Rules",
+      "proposed_path": "TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\",
+      "proposed_name": "TSI — DATA PRIVACY RULES v1.0 MASTER.gdoc",
+      "rename_reason": "Decision A canonical security location",
+      "confidence": "High",
+      "action": "MOVE"
+    },
+    {
+      "source_drive": "",
+      "current_name": "TSI — VISION   IMAGE PRIVACY CONTROLS.gdoc",
+      "current_path": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.5 Vision Image Privacy Controls",
+      "proposed_path": "TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\",
+      "proposed_name": "TSI — VISION   IMAGE PRIVACY CONTROLS.gdoc",
+      "rename_reason": "Decision A canonical security location",
+      "confidence": "High",
+      "action": "MOVE"
+    },
+    {
+      "source_drive": "",
+      "current_name": "TSI — DEVICE AUTHENTICATION KEYS.gdoc",
+      "current_path": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.4 Device Authentication Keys",
+      "proposed_path": "TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\",
+      "proposed_name": "TSI — DEVICE AUTHENTICATION KEYS.gdoc",
+      "rename_reason": "Decision A canonical security location",
+      "confidence": "High",
+      "action": "MOVE"
+    }
+  ],
+  "note": "DRY-RUN only. No Drive calls made. Re-run with --live once live execute is implemented."
+}
