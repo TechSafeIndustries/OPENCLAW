@@ -1,0 +1,3 @@
+CurrentPath,CurrentName,ProposedTSI01Path,ProposedName,Status,Error
+C:\Users\mikes\.gemini\antigravity\scratch\openclaw\stack\cdms_tmp\source,missing.txt,stack/cdms_tmp/target,missing.txt,SKIPPED_MISSING_SOURCE,Source path missing at execution time
+C:\Users\mikes\.gemini\antigravity\scratch\openclaw\stack\cdms_tmp\source,file2.txt,stack/cdms_tmp/target,file2_moved.txt,OK,

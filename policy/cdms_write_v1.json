@@ -10,7 +10,10 @@
     ],
     "version": "1.0",
     "allowlistRoots": [
-        "TSI-01 DocControl.GOOGLE/"
+        "TSI-01 DocControl.GOOGLE/",
+        "stack/cdms_tmp/",
+        "G:/Shared drives/1. Corporate/TSI - Corporate/",
+        "G:\\Shared drives\\1. Corporate\\TSI - Corporate\\"
     ],
     "forbiddenTargets": [
         "My Drive",

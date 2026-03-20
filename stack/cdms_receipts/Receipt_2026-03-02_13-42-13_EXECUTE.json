@@ -1,0 +1,39 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_RETRY_DAK_SUBST_20260302_204208",
+  "owner": "cos",
+  "executed_at": "2026-03-02T13:42:13.121Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//",
+    "X:/",
+    "X://"
+  ],
+  "row_count": 1,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "f73f6d3a-2a0c-4340-8eab-465bde2c4df5",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T13:42:12.991Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "X:\\TSI — DEVICE AUTHENTICATION KEYS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-DAK_26cf02f5.gdoc",
+      "error": "Source path missing at execution time"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

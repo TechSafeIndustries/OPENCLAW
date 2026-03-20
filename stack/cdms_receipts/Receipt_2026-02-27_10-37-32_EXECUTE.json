@@ -1,0 +1,31 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_smoke_test",
+  "owner": "cos",
+  "executed_at": "2026-02-27T10:37:32.293Z",
+  "allowlist_roots": [
+    "TSI-01 DocControl.GOOGLE/",
+    "stack/cdms_tmp/"
+  ],
+  "row_count": 2,
+  "stop_loss_triggered": true,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "37a3d6a6-0f83-499f-b3af-675d0908b3f8",
+    "approved_by": "cos",
+    "approval_ts": "2026-02-27T10:34:21.995Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "src": "stack/cdms_tmp/src/file1.txt",
+      "dst": "stack/cdms_tmp/dst/file1.txt",
+      "error": "Source file does not exist"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

@@ -1,0 +1,10 @@
+{
+  "version": "v2",
+  "readRoots": ["gs://tsi-automation-ase1-input-warehouse/"],
+  "writeRoots": ["gs://tsi-automation-ase1-pipeline-staging/","gs://tsi-automation-ase1-controlled-outputs/"],
+  "maxBatchSize": 10,
+  "requireDryRun": true,
+  "requireHumanApproval": true,
+  "stopLoss": {"maxFailures": 3,"abortOnPermissionError": true,"abortOnUnexpectedRoot": true},
+  "auditRequired": true
+}

@@ -1,0 +1,6 @@
+﻿"BatchId","SourceDrive","CurrentPath","CurrentName","CurrentType","ProposedTSI01Path","ProposedName","RenameReason","Confidence","_shortCode"
+"high_2026-03-02_14-02-28","","X:\","TSI — ZERO TRUST & ROLE SEGREGATION MODEL.gdoc","File","TSI-01 DocControl.GOOGLE\INCOMING\","TSI-ZT-RS_a8327fe0.gdoc","Decision A canonical security location | AUTO_SHORT_PATHLEN","High","TSI-ZT-RS"
+"high_2026-03-02_14-02-28","","X:\","TSI — WORKER & CONTRACTOR SEPARATION MODEL v1.0 MASTER.gdoc","File","TSI-01 DocControl.GOOGLE\INCOMING\","TSI-WC-RS_e353d2a7.gdoc","Decision A canonical security location | AUTO_SHORT_PATHLEN","High","TSI-WC-RS"
+"high_2026-03-02_14-02-28","","X:\","TSI — DATA PRIVACY RULES v1.0 MASTER.gdoc","File","TSI-01 DocControl.GOOGLE\INCOMING\","TSI-DPR_a518f2e7.gdoc","Decision A canonical security location | AUTO_SHORT_PATHLEN","High","TSI-DPR"
+"high_2026-03-02_14-02-28","","X:\","TSI — VISION   IMAGE PRIVACY CONTROLS.gdoc","File","TSI-01 DocControl.GOOGLE\INCOMING\","TSI-VIPC_49fea6d2.gdoc","Decision A canonical security location | AUTO_SHORT_PATHLEN","High","TSI-VIPC"
+"high_2026-03-02_14-02-28","","X:\","TSI — DEVICE AUTHENTICATION KEYS.gdoc","File","TSI-01 DocControl.GOOGLE\INCOMING\","TSI-DAK_5604936e.gdoc","Decision A canonical security location | AUTO_SHORT_PATHLEN","High","TSI-DAK"

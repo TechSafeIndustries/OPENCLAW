@@ -1,0 +1,86 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_high_2026-03-02_16-26-28",
+  "owner": "cos",
+  "executed_at": "2026-03-02T16:41:19.020Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//"
+  ],
+  "row_count": 8,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "0a0053f8-b7c4-4edc-af15-07c49c159121",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T16:41:02.598Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 07 - OS Change Log (Master)\\9. SECURITY & ACCESS CONTROL (OS-07-F)\\SECURITY & ACCESS CONTROL (OS-07-F).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_40456d21.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\6. SECURITY\\ACP v3 Security Policy.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_a79a93a0.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 06 - AI-Integrated Workflows (Draft)\\4. Security + Continuity Rules (OS-06-C)\\Security and Continuity Rules (OS-06-C).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_08ba66c2.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "FAIL",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.1 Zero Trust   Role Segregation\\TSI — ZERO TRUST & ROLE SEGREGATION MODEL.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-ZT-RS_a8327fe0.gdoc",
+      "error": "Path too long (316 chars, max 250)"
+    },
+    {
+      "ok": false,
+      "status": "FAIL",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.3 Worker & Contractor Separation\\TSI — WORKER & CONTRACTOR SEPARATION MODEL v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-WC-RS_114d41f4.gdoc",
+      "error": "Path too long (330 chars, max 250)"
+    },
+    {
+      "ok": false,
+      "status": "FAIL",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.2 Data Privacy Rules\\TSI — DATA PRIVACY RULES v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_ae010089.gdoc",
+      "error": "Path too long (300 chars, max 250)"
+    },
+    {
+      "ok": false,
+      "status": "FAIL",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.5 Vision Image Privacy Controls\\TSI — VISION   IMAGE PRIVACY CONTROLS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_8a9832ea.gdoc",
+      "error": "Path too long (312 chars, max 250)"
+    },
+    {
+      "ok": false,
+      "status": "FAIL",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.4 Device Authentication Keys\\TSI — DEVICE AUTHENTICATION KEYS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-DAK_26cf02f5.gdoc",
+      "error": "Path too long (304 chars, max 250)"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

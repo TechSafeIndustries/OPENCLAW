@@ -1,0 +1,33 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_high_2026-02-24_18-48-47_repair1_SKIP1",
+  "owner": "cos",
+  "executed_at": "2026-02-27T15:19:46.615Z",
+  "allowlist_roots": [
+    "TSI-01 DocControl.GOOGLE/",
+    "stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/"
+  ],
+  "row_count": 7,
+  "stop_loss_triggered": true,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "380cb19e-05ca-4d4b-b96b-5fdca5448105",
+    "approved_by": "cos",
+    "approval_ts": "2026-02-27T15:19:28.190Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\6. SECURITY\\ACP v3 Security Policy.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\ACP v3 Security Policy.gdoc",
+      "error": "Source file does not exist"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

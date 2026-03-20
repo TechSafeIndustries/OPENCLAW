@@ -1,0 +1,161 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_low_2026-03-02_20-21-36",
+  "owner": "cos",
+  "executed_at": "2026-03-02T20:24:15.958Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//"
+  ],
+  "row_count": 10,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "5da05aa3-e3ec-460b-b17b-dcdf3d51d34c",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T20:23:37.240Z"
+  },
+  "results": [
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 3 — AI ORCHESTRATION LAYER\\3.3 Risk Classification Agent\\TSI — RISK CLASSIFICATION AGENT v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_1ace7e05.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 6 — User Hierarchy & Permissions\\6.3 Site Managers\\TSI — USER PERMISSIONS  SITE MANAGERS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_c7472743.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 6 — User Hierarchy & Permissions\\6.4 Contractors\\TSI — USER PERMISSIONS  CONTRACTORS v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_64b69495.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 6 — User Hierarchy & Permissions\\6.1 Workers\\TSI—USER PERMISSIONS  WORKERS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_41aa7250.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 6 — User Hierarchy & Permissions\\6.5 Admin   TSI Staff\\TSI — USER PERMISSIONS  ADMIN   TSI STAFF.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_67f42534.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 6 — User Hierarchy & Permissions\\6.2 Supervisors\\TSI — USER PERMISSIONS  SUPERVISORS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_5bfd1849.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 2 — CORE ARCHITECTURE BLUEPRINT\\2.1 High-Level System Diagram\\TSI — SAI-COM HIGH-LEVEL SYSTEM DIAGRAM v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_455a96d9.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 2 — CORE ARCHITECTURE BLUEPRINT\\2.3 Data Flow Models (Text + Vision + Sensors)\\TSI - SAI-COM DATA FLOW MODELS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_eab56919.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 2 — CORE ARCHITECTURE BLUEPRINT\\2.4 SAI-COM to SAI Communication Model\\TSI — SAI-COM TO SAI COMMUNICATION MODEL.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_1d484642.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 2 — CORE ARCHITECTURE BLUEPRINT\\2.5 Device Integration Gateway (Smart Tools)\\TSI — DEVICE INTEGRATION GATEWAY (SMART TOOLS).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_532a6796.gdoc",
+      "error": null
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_1ace7e05.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 3 — AI ORCHESTRATION LAYER\\3.3 Risk Classification Agent\\TSI — RISK CLASSIFICATION AGENT v1.0 MASTER.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_c7472743.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 6 — User Hierarchy & Permissions\\6.3 Site Managers\\TSI — USER PERMISSIONS  SITE MANAGERS.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_64b69495.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 6 — User Hierarchy & Permissions\\6.4 Contractors\\TSI — USER PERMISSIONS  CONTRACTORS v1.0 MASTER.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_41aa7250.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 6 — User Hierarchy & Permissions\\6.1 Workers\\TSI—USER PERMISSIONS  WORKERS.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_67f42534.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 6 — User Hierarchy & Permissions\\6.5 Admin   TSI Staff\\TSI — USER PERMISSIONS  ADMIN   TSI STAFF.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_5bfd1849.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 6 — User Hierarchy & Permissions\\6.2 Supervisors\\TSI — USER PERMISSIONS  SUPERVISORS.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_455a96d9.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 2 — CORE ARCHITECTURE BLUEPRINT\\2.1 High-Level System Diagram\\TSI — SAI-COM HIGH-LEVEL SYSTEM DIAGRAM v1.0 MASTER.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_eab56919.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 2 — CORE ARCHITECTURE BLUEPRINT\\2.3 Data Flow Models (Text + Vision + Sensors)\\TSI - SAI-COM DATA FLOW MODELS.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_1d484642.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 2 — CORE ARCHITECTURE BLUEPRINT\\2.4 SAI-COM to SAI Communication Model\\TSI — SAI-COM TO SAI COMMUNICATION MODEL.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_532a6796.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 2 — CORE ARCHITECTURE BLUEPRINT\\2.5 Device Integration Gateway (Smart Tools)\\TSI — DEVICE INTEGRATION GATEWAY (SMART TOOLS).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    }
+  ],
+  "note": "EXECUTE mode. Logic implemented."
+}

@@ -1,0 +1,35 @@
+{
+  "mode": "EXECUTE",
+  "batch": "Batch_Smoke_Stop",
+  "owner": "smoke-tester",
+  "executed_at": "2026-03-01T15:07:13.779Z",
+  "allowlist_roots": [
+    "TSI-01 DocControl.GOOGLE/",
+    "stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/"
+  ],
+  "row_count": 2,
+  "stop_loss_triggered": true,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "aaa6e2d7-95a1-42c6-b84f-45333a14a1bd",
+    "approved_by": "smoke-tester",
+    "approval_ts": "2026-03-01T15:07:13.673Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "status": "FAIL",
+      "src": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\source\\file4.txt",
+      "dst": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\target\\file1_moved.txt",
+      "error": "Destination already exists (no overwrite)"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

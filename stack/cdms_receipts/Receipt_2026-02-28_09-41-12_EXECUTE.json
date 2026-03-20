@@ -1,0 +1,35 @@
+{
+  "mode": "EXECUTE",
+  "batch": "Batch_Smoke_Exec",
+  "owner": "smoke-tester",
+  "executed_at": "2026-02-28T09:41:12.603Z",
+  "allowlist_roots": [
+    "TSI-01 DocControl.GOOGLE/",
+    "stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/"
+  ],
+  "row_count": 1,
+  "stop_loss_triggered": true,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "71a2984e-33d2-4615-baa5-53d3328f6388",
+    "approved_by": "smoke-tester",
+    "approval_ts": "2026-02-28T09:41:12.488Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "status": "FAIL",
+      "src": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\source\\file1.txt",
+      "dst": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\stack\\cdms_tmp\\target\\file1_moved.txt",
+      "error": "Target parent directory does not exist: C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\stack\\cdms_tmp\\target"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

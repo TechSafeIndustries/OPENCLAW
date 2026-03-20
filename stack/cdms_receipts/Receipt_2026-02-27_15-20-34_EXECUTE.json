@@ -1,0 +1,33 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_high_2026-02-24_18-48-47_repair1_ROW1FIX",
+  "owner": "cos",
+  "executed_at": "2026-02-27T15:20:34.468Z",
+  "allowlist_roots": [
+    "TSI-01 DocControl.GOOGLE/",
+    "stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/"
+  ],
+  "row_count": 1,
+  "stop_loss_triggered": true,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "281c7e8e-8bf1-4ed7-85b6-2c53716c91f8",
+    "approved_by": "cos",
+    "approval_ts": "2026-02-27T15:19:28.836Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 07 - OS Change Log (Master)\\9. SECURITY & ACCESS CONTROL (OS-07-F)\\SECURITY & ACCESS CONTROL (OS-07-F).gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\SECURITY & ACCESS CONTROL (OS-07-F).gdoc",
+      "error": "Source file does not exist"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

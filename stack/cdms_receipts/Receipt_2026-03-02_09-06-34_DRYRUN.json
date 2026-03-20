@@ -1,0 +1,29 @@
+{
+  "mode": "DRYRUN",
+  "batch": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq24",
+  "owner": "cos",
+  "executed_at": "2026-03-02T09:06:34.362Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//"
+  ],
+  "row_count": 10,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "06fcb026-f288-416b-bde2-e8eb816e0cd6",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T09:06:32.379Z"
+  },
+  "results": [],
+  "rollback_plan": [],
+  "note": "DRY-RUN only. No filesystem changes made."
+}

@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
 const STACK_DIR = path.join(ROOT, 'stack');
@@ -125,7 +126,8 @@ function actionScan() {
 
 // ── Action: plan ──────────────────────────────────────────────────────────────
 
-function actionPlan(wave) {
+function actionPlan(wave, opts = {}) {
+    const { forceShortRoot = false } = opts;
     const waveArg = (wave || 'high').toLowerCase();
 
     if (!fs.existsSync(MAP_PATH)) {
@@ -179,7 +181,49 @@ function actionPlan(wave) {
         'BatchId', 'SourceDrive', 'CurrentPath', 'CurrentName', 'CurrentType',
         'ProposedTSI01Path', 'ProposedName', 'RenameReason', 'Confidence',
     ];
-    const outputRows = batch.map(r => ({ BatchId: batchId, ...r }));
+
+    const trim = (s) => String(s || "").replace(/^[\\\/]+/, "").replace(/[\\\/]+$/, "");
+    const driveBase = "G:\\Shared drives\\";
+
+    const outputRows = batch.map((r, i) => {
+        const row = { BatchId: batchId, ...r };
+
+        // ── AUTO_SHORT_PATHLEN logic ──
+        const pTSI = row.ProposedTSI01Path || "";
+        const pName = row.ProposedName || "";
+
+        // Compute dstAbs with backslashes
+        const dstAbs = driveBase + trim(pTSI) + "\\" + trim(pName);
+
+        // If forceShortRoot is ON, or if path is > 240 chars: apply SHORTENING
+        if (forceShortRoot || dstAbs.length > 240) {
+            const newPTSI = "TSI-01 DocControl.GOOGLE\\INCOMING\\";
+
+            // shortCode
+            const cName = row.CurrentName || "";
+            let shortCode = "TSI-SHORT";
+            if (cName.includes("DEVICE AUTHENTICATION KEYS")) shortCode = "TSI-DAK";
+            else if (cName.includes("WORKER & CONTRACTOR SEPARATION")) shortCode = "TSI-WC-RS";
+            else if (cName.includes("ZERO TRUST")) shortCode = "TSI-ZT-RS";
+
+            // hash8
+            const cPath = row.CurrentPath || "";
+            const srcRef = cPath + "\\" + cName;
+            const hash8 = crypto.createHash('sha1').update(srcRef, 'utf8').digest('hex').slice(0, 8);
+
+            // ext
+            const ext = path.extname(pName);
+            const newPName = `${shortCode}_${hash8}${ext}`;
+
+            row.ProposedTSI01Path = newPTSI;
+            row.ProposedName = newPName;
+            const reason = forceShortRoot ? "FORCE_SHORT_ROOT" : "AUTO_SHORT_PATHLEN";
+            row.RenameReason = (row.RenameReason || "") + (row.RenameReason ? "; " : "") + reason;
+        }
+
+        return row;
+    });
+
     fs.writeFileSync(batchPath, toCsv(outputRows, HEADERS), 'utf8');
 
     return {
@@ -198,10 +242,10 @@ function actionPlan(wave) {
 
 // ── Dispatch ──────────────────────────────────────────────────────────────────
 
-function run({ action, wave }) {
+function run({ action, wave, forceShortRoot }) {
     switch ((action || '').toLowerCase()) {
         case 'scan': return actionScan();
-        case 'plan': return actionPlan(wave);
+        case 'plan': return actionPlan(wave, { forceShortRoot });
         default:
             return {
                 ok: false,
@@ -243,13 +287,14 @@ if (require.main === module) {
 
     const action = get('--action');
     const wave = get('--wave') || 'high';
+    const forceShortRoot = args.includes('--force-short-root');
 
     if (!action) {
-        console.error('Usage: node agents/cdms_agent_v1.js --action <scan|plan> [--wave <high|med|low|all>]');
+        console.error('Usage: node agents/cdms_agent_v1.js --action <scan|plan> [--wave <high|med|low|all>] [--force-short-root]');
         process.exit(1);
     }
 
-    const result = run({ action, wave });
+    const result = run({ action, wave, forceShortRoot });
     console.log(JSON.stringify(result, null, 2));
     process.exit(result.ok ? 0 : 1);
 }

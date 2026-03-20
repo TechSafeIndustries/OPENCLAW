@@ -228,6 +228,47 @@
                     "deployment"
                 ]
             }
+        },
+        {
+            "name": "scout",
+            "version": "v1.0",
+            "status": "active",
+            "purpose": "Discovery Agent for newly migrated assets. Scans DocControl for high-value media (video, audio, blueprints) to support TechSafeAI content campaigns.",
+            "priority": 40,
+            "scope": {
+                "allowed": [
+                    "media_discovery",
+                    "manifest_ingestion",
+                    "metadata_scoring",
+                    "ledger_cross_ref"
+                ],
+                "excluded": [
+                    "asset_move",
+                    "public_publishing",
+                    "external_comms"
+                ]
+            },
+            "io_schema": {
+                "input_required": [
+                    "batch_id",
+                    "target_roots",
+                    "scoring_criteria"
+                ],
+                "output_format": "STRUCTURED_JSON"
+            },
+            "policies": {
+                "hard_rules": [
+                    "Must verify against AG ledger (action.status=OK)",
+                    "No asset modification or movement",
+                    "Strict AD-HOC read-only access to ledger",
+                    "Respect allowlistRoots from cdms_write_rule_v1.json"
+                ],
+                "gating_triggers": [
+                    "discovery_high_count",
+                    "unrecognized_extension",
+                    "mismatched_provenance"
+                ]
+            }
         }
     ],
     "routing_rules": [
@@ -304,6 +345,21 @@
             "constraints": [
                 "no_deployments_unless_requested",
                 "structured_outputs_only"
+            ]
+        },
+        {
+            "intent": "MEDIA_DISCOVERY",
+            "primary_agent": "scout",
+            "secondary_agents": [
+                "marketing_pr",
+                "governance",
+                "cos"
+            ],
+            "requires_governance_review": true,
+            "constraints": [
+                "structured_outputs_only",
+                "read_only_discovery",
+                "ledger_verification_required"
             ]
         }
     ]

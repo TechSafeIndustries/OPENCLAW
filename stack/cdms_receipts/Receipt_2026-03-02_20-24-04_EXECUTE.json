@@ -1,0 +1,161 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_low_2026-03-02_20-21-36",
+  "owner": "cos",
+  "executed_at": "2026-03-02T20:24:04.568Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//"
+  ],
+  "row_count": 10,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "5da05aa3-e3ec-460b-b17b-dcdf3d51d34c",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T20:23:37.240Z"
+  },
+  "results": [
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\1. SCOPE\\Agent and Automation Scope Document.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_83fd858c.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\4. AI FAILURE PREVENTION RULES (ZERO-DRIFT SYSTEM)\\AI Failure Prevention Rules (Zero-Drift System).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_11104d09.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\7. VERSION HISTORY\\Version History.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_3de66832.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\8. SUMMARY\\ACP v3 Guarantees Summary.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_103bb821.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\2. ACP v3 — MEMORY CHAIN (MANDATORY)\\ACP v3 — MEMORY CHAIN (MANDATORY).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_8c9df59b.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 06 - AI-Integrated Workflows (Draft)\\2. Master Workflow List (OS-06-A)\\Master Workflow List (OS-06-A).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_d0b7b556.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 06 - AI-Integrated Workflows (Draft)\\1. AI Workflow Architecture Overview\\AI Workflow Architecture Overview.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_92f7cd38.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 06 - AI-Integrated Workflows (Draft)\\5. Workflow Templates\\Workflow Templates.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_8bd688fd.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 06 - AI-Integrated Workflows (Draft)\\3. Permissions Map (OS-06-B)\\Permissions Map (OS-06-B).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_9bc60309.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 1 — System Overview & Purpose\\1.2 Role in the TSI Ecosystem\\TSI — SAI-COM ROLE IN THE ECOSYSTEM.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_b7075880.gdoc",
+      "error": null
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_83fd858c.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\1. SCOPE\\Agent and Automation Scope Document.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_11104d09.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\4. AI FAILURE PREVENTION RULES (ZERO-DRIFT SYSTEM)\\AI Failure Prevention Rules (Zero-Drift System).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_3de66832.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\7. VERSION HISTORY\\Version History.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_103bb821.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\8. SUMMARY\\ACP v3 Guarantees Summary.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_8c9df59b.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\2. ACP v3 — MEMORY CHAIN (MANDATORY)\\ACP v3 — MEMORY CHAIN (MANDATORY).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_d0b7b556.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 06 - AI-Integrated Workflows (Draft)\\2. Master Workflow List (OS-06-A)\\Master Workflow List (OS-06-A).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_92f7cd38.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 06 - AI-Integrated Workflows (Draft)\\1. AI Workflow Architecture Overview\\AI Workflow Architecture Overview.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_8bd688fd.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 06 - AI-Integrated Workflows (Draft)\\5. Workflow Templates\\Workflow Templates.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_9bc60309.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 06 - AI-Integrated Workflows (Draft)\\3. Permissions Map (OS-06-B)\\Permissions Map (OS-06-B).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_b7075880.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 1 — System Overview & Purpose\\1.2 Role in the TSI Ecosystem\\TSI — SAI-COM ROLE IN THE ECOSYSTEM.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    }
+  ],
+  "note": "EXECUTE mode. Logic implemented."
+}

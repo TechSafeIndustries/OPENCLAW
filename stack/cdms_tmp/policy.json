@@ -1,0 +1,7 @@
+{
+    "allowlistRoots":  [
+                           "G:/My Drive/",
+                           "G:/Shared drives/TSI-01 DocControl.GOOGLE/"
+                       ],
+    "maxBatchSize":  10
+}

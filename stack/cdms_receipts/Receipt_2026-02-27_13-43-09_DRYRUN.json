@@ -1,0 +1,26 @@
+{
+  "mode": "DRYRUN",
+  "batch": "MoveBatch_high_2026-02-24_18-48-47_repair1",
+  "owner": "cos",
+  "executed_at": "2026-02-27T13:43:09.340Z",
+  "allowlist_roots": [
+    "TSI-01 DocControl.GOOGLE/",
+    "stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/"
+  ],
+  "row_count": 8,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "149047cd-ba7f-4d8e-9f29-5a77067fc507",
+    "approved_by": "cos",
+    "approval_ts": "2026-02-27T09:30:34.396Z"
+  },
+  "results": [],
+  "rollback_plan": [],
+  "note": "DRY-RUN only. No filesystem changes made."
+}

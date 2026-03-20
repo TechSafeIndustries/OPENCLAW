@@ -1,0 +1,30 @@
+{
+    "mappings": [
+        {
+            "pattern": "\\\\Policies\\\\Security_And_Access_Control\\\\",
+            "targetPath": "Policies/Security_And_Access_Control",
+            "priority": 10
+        },
+        {
+            "pattern": "\\\\Finance\\\\",
+            "targetPath": "Finance/Accounting",
+            "priority": 5
+        },
+        {
+            "pattern": "\\\\Legal\\\\Compliance\\\\",
+            "targetPath": "Legal/Compliance",
+            "priority": 10,
+            "hitlRequired": true,
+            "security": "Confidential"
+        },
+        {
+            "pattern": "\\\\HR\\\\",
+            "targetPath": "Human_Resources/Personnel",
+            "priority": 5
+        }
+    ],
+    "default": {
+        "targetPath": "99_INBOX/UNCLASSIFIED",
+        "security": "Internal"
+    }
+}

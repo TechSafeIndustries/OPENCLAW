@@ -1287,3 +1287,116 @@ Remove `--dry-run` and re-run to execute for real.
 | E — success (unit) | Fake triage: ok+task_id | `close_task` | 0 |
 
 Run: `node scripts/smoke_governance_loop.js` (11/11 checks pass)
+
+---
+
+## 14. CDMS Execute — Drive Operations (Restricted)
+
+> **Execution command for CDMS move/rename operations.**
+> All operations are **atomic moves** (no copy+delete fallback) and are gated by strict policy controls.
+
+### Commands
+
+| Mode | Command | Effect |
+|:---|:---|:---|
+| **DRY-RUN** | `npm run workflow:cdms-execute -- --batch <id> --owner <name>` | Validates all gates (1–4), computes moves, writes dry-run receipt. **Safe.** |
+| **EXECUTE** | `npm run workflow:cdms-execute -- --batch <id> --owner <name> --execute` | Validates all gates, then performs atomic moves on files. **Material change.** |
+
+### Policy Gates
+
+Before any operation (Dry or Live), the script enforces these 4 gates in order. **One failure stops the run.**
+
+1.  **Batch Existence**: Batch ID must exist under `stack/cdms_batches/` as a CSV.
+2.  **Row Count**: Batch size must be <= `policy.maxBatchSize` (Current limit: 10 rows).
+3.  **Allowlist**: Every `ProposedTSI01Path` must start with `allowlistRoots[0]`.
+4.  **HITL Approval**: A matching `APPROVED` decision for the batch must exist in the ledger (`decisions` table).
+
+### Stop-Loss Behaviour
+
+The execution loop (when `--execute` is present) uses a **Fail-Fast** stop-loss strategy:
+- Every move is validated for source existence, destination non-existence, and path length (< 250 characters).
+- **First Failure Aborts**: If any row fails validation or the move operation, the script aborts immediately. Remaining rows are skipped to prevent cascading errors.
+- **Cross-Device Block**: Moves across different volumes (cross-device) are blocked to ensure atomicity.
+
+### Audit & Receipts
+
+All runs generate artifacts in `stack/cdms_receipts/`:
+
+- **JSON Receipt**: `Receipt_<timestamp>_<MODE>.json`. Contains gate status, per-row results, and a **rollback_plan** (list of reverse moves for successful operations).
+- **CSV Runsheet**: `RunSheet_<timestamp>_status-<MODE>.csv`. A flat log of every row, its status (OK/FAIL/SKIPPED), and any error message.
+- **Ledger Entries**:
+    - `cdms_execute`: Top-level summary of the run.
+    - `cdms_move`: Per-row audit action for every move attempted in EXECUTE mode.
+
+> [!WARNING]
+> **Safety First**: NEVER run `--execute` on real G:\ Drive batches until you have successfully verified the workflow using mock paths in `stack/cdms_tmp/`.
+---
+
+## 14. CDMS Bulk Pipeline (Mode 1 / High-Control)
+
+> **Goal:** Bulk sort/move files from DriveFS (G:\Shared drives\...) into the correct DocControl structure deterministically.
+
+### 14.1 Preconditions
+- DriveFS mounted: `G:\Shared drives\` must be accessible.
+- Ledger initialized: `npm run bootstrap:ledger`.
+- Routing Map exists: `stack/mappings/doccontrol_route_map_v1.json`.
+
+### 14.2 Export Drive Inventory (G:\ Shared drives)
+Scans the actual filesystem. Run this right before building batches to ensure freshness.
+
+```cmd
+REM Export target (DocControl) inventory
+npm run drive:export-doccontrol
+
+REM Export source (e.g. Corporate) inventory
+npm run drive:export-corporate
+```
+
+### 14.3 Build Migration Batch (High-Control)
+Creates deterministic batches from the fresh inventory exports.
+
+```cmd
+REM Build batches (must be within 15 mins of export)
+npm run cdms:batch-build -- --source-drive "1. Corporate" --mode MIGRATE --max-batch 10 --owner cos
+```
+*Outputs: `stack/cdms_batches/Batch_MIGRATE_1__Corporate_<timestamp>_seq01.csv`*
+
+### 14.4 Dry-Run Execute
+Verify the first batch against all hard gates.
+
+```cmd
+npm run workflow:cdms-execute -- --batch Batch_MIGRATE_1__Corporate_<timestamp>_seq01 --owner cos
+```
+
+### 14.5 Human Approval
+A human must approve the batch in the ledger.
+
+```cmd
+npm run workflow:cdms-human-review -- --batch Batch_MIGRATE_1__Corporate_<timestamp>_seq01 --decision approve --reason "Bulk migration" --owner cos
+```
+
+### 14.6 EXECUTE (Live)
+Perform the actual moves on the filesystem.
+
+```cmd
+npm run workflow:cdms-execute -- --batch Batch_MIGRATE_1__Corporate_<timestamp>_seq01 --execute --owner cos
+```
+
+### 14.7 Safety Gates & Audit Trail
+- **SKIPPED_MISSING_SOURCE**: If a source file is missing (stale batch), execution continues to the next row.
+- **STOP-LOSS**: Aborts remaining rows if overwrite is attempted or target is outside allowlist.
+
+### 14.8 Smoke Testing
+Validate the pipeline logic in a safe temp environment (`stack/cdms_tmp`).
+
+**Command (Windows PowerShell):**
+```powershell
+$env:CDMS_ALLOW_LOCAL_TMP=1; npm run cdms:smoke
+```
+
+**Command (CMD):**
+```cmd
+set CDMS_ALLOW_LOCAL_TMP=1 && npm run cdms:smoke
+```
+
+This unblocks local file operations for testing by extending the policy allowlist to include the project's own `stack/cdms_tmp` directory.

@@ -1,0 +1,67 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_high_2026-03-02_14-02-28_PATHFIX5_SUBST_20260302_212451",
+  "owner": "cos",
+  "executed_at": "2026-03-02T14:24:55.332Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//",
+    "X:/",
+    "X://"
+  ],
+  "row_count": 5,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "c5dc531d-7458-4ead-b94d-a712a88e684f",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T14:24:55.189Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "X:\\TSI — ZERO TRUST & ROLE SEGREGATION MODEL.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-ZT-RS_a8327fe0.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "X:\\TSI — WORKER & CONTRACTOR SEPARATION MODEL v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-WC-RS_e353d2a7.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "X:\\TSI — DATA PRIVACY RULES v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-DPR_a518f2e7.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "X:\\TSI — VISION   IMAGE PRIVACY CONTROLS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-VIPC_49fea6d2.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "X:\\TSI — DEVICE AUTHENTICATION KEYS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-DAK_5604936e.gdoc",
+      "error": "Source path missing at execution time"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

@@ -1,0 +1,6 @@
+﻿"Key","Pattern","FoundInDocControl","DocControlPath","FoundInCorporate","CorporatePath","Status"
+"ZT_RS","*ZERO TRUST*SEGREGATION*.gdoc","True","G:\Shared drives\TSI-01 DocControl.GOOGLE\01_Governance\Policies\Security_And_Access_Control\INCOMING\TSI — ZERO TRUST & ROLE SEGREGATION MODEL.gdoc","False",,"DONE_FOUND_AT_DESTINATION"
+"WC_RS","*WORKER*CONTRACTOR*SEPARATION*.gdoc","True","G:\Shared drives\TSI-01 DocControl.GOOGLE\01_Governance\Policies\Security_And_Access_Control\INCOMING\TSI — WORKER & CONTRACTOR SEPARATION MODEL v1.0 MASTER.gdoc","False",,"DONE_FOUND_AT_DESTINATION"
+"DPR","*DATA PRIVACY*RULES*.gdoc","True","G:\Shared drives\TSI-01 DocControl.GOOGLE\01_Governance\Policies\Privacy\Archive\TSI — DATA PRIVACY RULES v1.0 MASTER.gdoc","False",,"DONE_FOUND_AT_DESTINATION"
+"VIPC","*VISION*IMAGE*PRIVACY*CONTROLS*.gdoc","True","G:\Shared drives\TSI-01 DocControl.GOOGLE\01_Governance\Policies\Privacy\INCOMING\TSI — VISION IMAGE PRIVACY CONTROLS.gdoc","False",,"DONE_FOUND_AT_DESTINATION"
+"DAK","*DEVICE AUTHENTICATION KEYS*.gdoc","True","G:\Shared drives\TSI-01 DocControl.GOOGLE\01_Governance\Policies\Security_And_Access_Control\INCOMING\TSI — DEVICE AUTHENTICATION KEYS.gdoc","False",,"DONE_FOUND_AT_DESTINATION"

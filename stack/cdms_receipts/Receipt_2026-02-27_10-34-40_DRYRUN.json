@@ -1,0 +1,24 @@
+{
+  "mode": "DRYRUN",
+  "batch": "MoveBatch_smoke_test",
+  "owner": "cos",
+  "executed_at": "2026-02-27T10:34:40.381Z",
+  "allowlist_roots": [
+    "TSI-01 DocControl.GOOGLE/",
+    "stack/cdms_tmp/"
+  ],
+  "row_count": 2,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "37a3d6a6-0f83-499f-b3af-675d0908b3f8",
+    "approved_by": "cos",
+    "approval_ts": "2026-02-27T10:34:21.995Z"
+  },
+  "results": [],
+  "rollback_plan": [],
+  "note": "DRY-RUN only. No filesystem changes made."
+}

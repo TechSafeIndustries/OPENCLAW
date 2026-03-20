@@ -1,0 +1,49 @@
+{
+  "mode": "EXECUTE",
+  "batch": "Batch_Smoke_Skip",
+  "owner": "smoke-tester",
+  "executed_at": "2026-03-01T14:56:33.729Z",
+  "allowlist_roots": [
+    "TSI-01 DocControl.GOOGLE/",
+    "stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/"
+  ],
+  "row_count": 2,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "259bc22f-aa54-41d7-ac26-dd70f7b82b29",
+    "approved_by": "smoke-tester",
+    "approval_ts": "2026-03-01T14:56:33.623Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\source\\missing.txt",
+      "dst": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\target\\missing.txt",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\source\\file2.txt",
+      "dst": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\target\\file2_moved.txt",
+      "error": null
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "MOVE",
+      "src": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\target\\file2_moved.txt",
+      "dst": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\source\\file2.txt",
+      "reason": "Rollback of Batch_Smoke_Skip"
+    }
+  ],
+  "note": "EXECUTE mode. Logic implemented."
+}

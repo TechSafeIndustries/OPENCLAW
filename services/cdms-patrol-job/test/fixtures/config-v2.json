@@ -1,0 +1,21 @@
+{
+  "version": "v2",
+  "readRoots": [
+    "gs://tsi-automation-ase1-input-warehouse/",
+    "gs://tsi-automation-ase1-portfolio-warehouse/",
+    "gs://tsi-automation-ase1-playbook-library/",
+    "gs://tsi-automation-ase1-corporate-context/"
+  ],
+  "writeRoots": [
+    "gs://tsi-automation-ase1-pipeline-staging/"
+  ],
+  "maxBatchSize": 10,
+  "requireDryRun": true,
+  "requireHumanApproval": true,
+  "stopLoss": {
+    "maxFailures": 3,
+    "abortOnPermissionError": true,
+    "abortOnUnexpectedRoot": true
+  },
+  "auditRequired": true
+}

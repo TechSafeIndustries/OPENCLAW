@@ -1,0 +1,31 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_smoke_overwrite",
+  "owner": "cos",
+  "executed_at": "2026-02-27T10:40:39.759Z",
+  "allowlist_roots": [
+    "TSI-01 DocControl.GOOGLE/",
+    "stack/cdms_tmp/"
+  ],
+  "row_count": 2,
+  "stop_loss_triggered": true,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "f97a3a28-4966-4577-b9b6-1c1863a3d84c",
+    "approved_by": "cos",
+    "approval_ts": "2026-02-27T10:40:25.007Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "src": "stack/cdms_tmp/src/file3.txt",
+      "dst": "stack/cdms_tmp/dst/file1.txt",
+      "error": "Destination already exists (no overwrite)"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

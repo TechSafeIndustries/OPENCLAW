@@ -1,0 +1,33 @@
+{
+  "batch_ref": "verify_fixture.csv",
+  "owner": "cos",
+  "method": "drivefs",
+  "ts": "2026-02-25T08:02:39.223Z",
+  "summary": {
+    "total": 2,
+    "pass": 0,
+    "fail": 2,
+    "status": "FAIL"
+  },
+  "items": [
+    {
+      "row_index": 1,
+      "sourceFullPath": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\OldPolicy.gdoc",
+      "targetFullPath": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\99_Staging\\OldPolicy.gdoc",
+      "source_exists": false,
+      "target_exists": false,
+      "status": "FAIL",
+      "reason": "Neither exist (file lost or paths wrong)"
+    },
+    {
+      "row_index": 2,
+      "sourceFullPath": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\02_Legal\\Contract_v1.pdf",
+      "targetFullPath": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\02_Legal\\Archived\\Contract_v1.pdf",
+      "source_exists": false,
+      "target_exists": false,
+      "status": "FAIL",
+      "reason": "Neither exist (file lost or paths wrong)"
+    }
+  ],
+  "note": "DriveFS may lag sync; rerun verify if FAIL and move already completed."
+}

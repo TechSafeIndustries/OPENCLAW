@@ -1,0 +1,3 @@
+CurrentPath,ProposedTSI01Path,CurrentName,ProposedName,SourceDrive,RenameReason,Confidence
+stack/cdms_tmp/src/file1.txt,stack/cdms_tmp/dst/file1.txt,file1.txt,file1.txt,TestDrive,SmokeTest,1.0
+stack/cdms_tmp/src/file2.txt,stack/cdms_tmp/dst/file2.txt,file2.txt,file2.txt,TestDrive,SmokeTest,1.0

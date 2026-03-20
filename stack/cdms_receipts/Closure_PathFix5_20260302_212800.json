@@ -1,0 +1,47 @@
+﻿[
+    {
+        "Key":  "ZT_RS",
+        "Pattern":  "*ZERO TRUST*SEGREGATION*.gdoc",
+        "FoundInDocControl":  true,
+        "DocControlPath":  "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\TSI — ZERO TRUST \u0026 ROLE SEGREGATION MODEL.gdoc",
+        "FoundInCorporate":  false,
+        "CorporatePath":  null,
+        "Status":  "DONE_FOUND_AT_DESTINATION"
+    },
+    {
+        "Key":  "WC_RS",
+        "Pattern":  "*WORKER*CONTRACTOR*SEPARATION*.gdoc",
+        "FoundInDocControl":  true,
+        "DocControlPath":  "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\TSI — WORKER \u0026 CONTRACTOR SEPARATION MODEL v1.0 MASTER.gdoc",
+        "FoundInCorporate":  false,
+        "CorporatePath":  null,
+        "Status":  "DONE_FOUND_AT_DESTINATION"
+    },
+    {
+        "Key":  "DPR",
+        "Pattern":  "*DATA PRIVACY*RULES*.gdoc",
+        "FoundInDocControl":  true,
+        "DocControlPath":  "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Privacy\\Archive\\TSI — DATA PRIVACY RULES v1.0 MASTER.gdoc",
+        "FoundInCorporate":  false,
+        "CorporatePath":  null,
+        "Status":  "DONE_FOUND_AT_DESTINATION"
+    },
+    {
+        "Key":  "VIPC",
+        "Pattern":  "*VISION*IMAGE*PRIVACY*CONTROLS*.gdoc",
+        "FoundInDocControl":  true,
+        "DocControlPath":  "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Privacy\\INCOMING\\TSI — VISION IMAGE PRIVACY CONTROLS.gdoc",
+        "FoundInCorporate":  false,
+        "CorporatePath":  null,
+        "Status":  "DONE_FOUND_AT_DESTINATION"
+    },
+    {
+        "Key":  "DAK",
+        "Pattern":  "*DEVICE AUTHENTICATION KEYS*.gdoc",
+        "FoundInDocControl":  true,
+        "DocControlPath":  "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\TSI — DEVICE AUTHENTICATION KEYS.gdoc",
+        "FoundInCorporate":  false,
+        "CorporatePath":  null,
+        "Status":  "DONE_FOUND_AT_DESTINATION"
+    }
+]

@@ -1,0 +1,2 @@
+CurrentPath,CurrentName,ProposedTSI01Path,ProposedName,Status,Error
+C:\Users\mikes\.gemini\antigravity\scratch\openclaw\stack\cdms_tmp\source,file1.txt,stack/cdms_tmp/target,file1_moved.txt,FAIL,Target parent directory does not exist: C:\Users\mikes\.gemini\antigravity\scratch\openclaw\stack\cdms_tmp\stack\cdms_tmp\target
