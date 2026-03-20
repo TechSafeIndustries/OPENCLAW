@@ -1,0 +1,173 @@
+{
+  "timestamp": "2026-03-02_08-32-18",
+  "run_mode": "MIGRATE",
+  "export_used": "stack\\drive_exports\\1__Corporate_inventory_20260302_153215.csv",
+  "export_timestamp": "20260302_153215",
+  "source_drive": "1. Corporate",
+  "target_drive": "TSI-01 DocControl.GOOGLE",
+  "total_rows_found": 249,
+  "batch_count": 25,
+  "max_batch_size": 10,
+  "batches": [
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq01",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq01.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq01.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq02",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq02.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq02.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq03",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq03.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq03.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq04",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq04.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq04.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq05",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq05.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq05.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq06",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq06.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq06.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq07",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq07.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq07.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq08",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq08.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq08.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq09",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq09.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq09.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq10",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq10.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq10.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq11",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq11.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq11.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq12",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq12.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq12.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq13",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq13.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq13.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq14",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq14.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq14.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq15",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq15.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq15.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq16",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq16.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq16.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq17",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq17.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq17.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq18",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq18.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq18.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq19",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq19.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq19.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq20",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq20.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq20.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq21",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq21.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq21.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq22",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq22.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq22.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq23",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq23.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq23.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq24",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq24.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq24.csv",
+      "rowCount": 10
+    },
+    {
+      "id": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq25",
+      "file": "Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq25.csv",
+      "path": "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_batches\\Batch_MIGRATE_1__Corporate_2026-03-02_08-32-18_seq25.csv",
+      "rowCount": 9
+    }
+  ],
+  "policy_version": "v1",
+  "allowlist_roots": [
+    "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\",
+    "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\",
+    "G:\\Shared drives\\1. Corporate\\TSI - Corporate\\",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G:\\\\Shared drives\\\\TSI-01 DocControl.GOOGLE\\\\",
+    "G:/Shared drives/1. Corporate/",
+    "G:\\\\Shared drives\\\\1. Corporate\\\\"
+  ]
+}

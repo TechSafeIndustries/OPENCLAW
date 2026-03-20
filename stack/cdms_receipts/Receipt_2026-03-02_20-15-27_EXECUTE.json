@@ -1,0 +1,65 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_low_2026-03-02_20-04-52",
+  "owner": "cos",
+  "executed_at": "2026-03-02T20:15:27.163Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//"
+  ],
+  "row_count": 5,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "9d1b7fd6-8057-4d88-99a6-ad0434a86718",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T20:14:51.858Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 07 - OS Change Log (Master)\\2. CHANGE CONTROL PRINCIPLES\\Change Control Principles.gdoc",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\99_Staging\\Corporate\\Change Control Principles.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 04 - Organisation Command Model (OCM)\\TSI-OS 04-04 — Responsibilities Matrix\\TSI-OS 04-04 — Responsibilities Matrix (v1.0).gdoc",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\99_Staging\\Corporate\\TSI-OS 04-04 — Responsibilities Matrix (v1.0).gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 04 - Organisation Command Model (OCM)\\TSI-OS 04-03 — Escalation Flows\\TSI-OS 04-03 — Escalation Flows (v1.0).gdoc",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\99_Staging\\Corporate\\TSI-OS 04-03 — Escalation Flows (v1.0).gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 04 - Organisation Command Model (OCM)\\TSI-OS 04-02 — Decision Authority Matrix\\TSI-OS 04-02 — Decision Authority Matrix (v1.0).gdoc",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\99_Staging\\Corporate\\TSI-OS 04-02 — Decision Authority Matrix (v1.0).gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 04 - Organisation Command Model (OCM)\\TSI-OS 04-01 — Command Levels\\TSI-OS 04-01 — Command Levels (v1.0).gdoc",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\99_Staging\\Corporate\\TSI-OS 04-01 — Command Levels (v1.0).gdoc",
+      "error": "Source path missing at execution time"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

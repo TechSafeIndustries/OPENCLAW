@@ -1,0 +1,44 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_high_2026-03-02_09-29-46_RETRY_PATHFIX",
+  "owner": "cos",
+  "executed_at": "2026-03-02T13:32:58.761Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//"
+  ],
+  "row_count": 2,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "a491fd7b-33cf-46fd-ba41-c3a5b5645120",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T13:32:56.525Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "status": "FAIL",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.3 Worker & Contractor Separation\\TSI — WORKER & CONTRACTOR SEPARATION MODEL v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\TSI-WC-RS_114d41f4.gdoc",
+      "error": "Path too long (330 chars, max 250)"
+    },
+    {
+      "ok": false,
+      "status": "FAIL",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 8 — SECURITY & AUTHENTICATION\\8.4 Device Authentication Keys\\TSI — DEVICE AUTHENTICATION KEYS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\01_Governance\\Policies\\Security_And_Access_Control\\INCOMING\\TSI-DAK_26cf02f5.gdoc",
+      "error": "Path too long (304 chars, max 250)"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

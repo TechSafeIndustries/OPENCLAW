@@ -1,0 +1,161 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_low_2026-03-02_20-21-36",
+  "owner": "cos",
+  "executed_at": "2026-03-02T20:24:13.130Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//"
+  ],
+  "row_count": 10,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "5da05aa3-e3ec-460b-b17b-dcdf3d51d34c",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T20:23:37.240Z"
+  },
+  "results": [
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 7 — DASHBOARDS & USER INTERFACE\\7.2 Supervisor Dashboard\\TSI — SUPERVISOR DASHBOARD v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_083e64dd.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 7 — DASHBOARDS & USER INTERFACE\\7.4 Contractor Onboarding Dashboard\\TSI — CONTRACTOR ONBOARDING DASHBOARD v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_05a067bf.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 9 — Versioning, Environments & DevOps\\9.4 Logging & Monitoring\\TSI — LOGGING & MONITORING FRAMEWORK.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_6d7cc642.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 9 — Versioning, Environments & DevOps\\9.3 Database Migration Patterns\\TSI — DATABASE MIGRATION PATTERNS.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_6a073a1f.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 9 — Versioning, Environments & DevOps\\9.1 Environments (Dev, Stage, Prod)\\TSI — ENVIRONMENTS STRUCTURE (DEV → STAGE → PROD).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_f9e0ca85.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 9 — Versioning, Environments & DevOps\\9.2 Deployment Pipeline\\TSI — DEPLOYMENT PIPELINE v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_78126c34.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 3 — AI ORCHESTRATION LAYER\\3.4 Vision Processing Agent\\TSI — VISION PROCESSING AGENT v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_608b0faa.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 3 — AI ORCHESTRATION LAYER\\3.1 MCP   ADA Agent Structure\\TSI — MCP   ADA AGENT STRUCTURE v1.0 MASTER.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_3b2d44bf.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 3 — AI ORCHESTRATION LAYER\\3.2 SAI Orchestration Nodes\\TSI — SAI ORCHESTRATION NODES.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_edfe42ef.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 3 — AI ORCHESTRATION LAYER\\3.5 IMS Compliance Agent\\TSI — IMS COMPLIANCE AGENT v1.0 MASTER.gdoc.lnk",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_1e4de803.lnk",
+      "error": null
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_083e64dd.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 7 — DASHBOARDS & USER INTERFACE\\7.2 Supervisor Dashboard\\TSI — SUPERVISOR DASHBOARD v1.0 MASTER.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_05a067bf.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 7 — DASHBOARDS & USER INTERFACE\\7.4 Contractor Onboarding Dashboard\\TSI — CONTRACTOR ONBOARDING DASHBOARD v1.0 MASTER.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_6d7cc642.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 9 — Versioning, Environments & DevOps\\9.4 Logging & Monitoring\\TSI — LOGGING & MONITORING FRAMEWORK.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_6a073a1f.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 9 — Versioning, Environments & DevOps\\9.3 Database Migration Patterns\\TSI — DATABASE MIGRATION PATTERNS.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_f9e0ca85.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 9 — Versioning, Environments & DevOps\\9.1 Environments (Dev, Stage, Prod)\\TSI — ENVIRONMENTS STRUCTURE (DEV → STAGE → PROD).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_78126c34.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 9 — Versioning, Environments & DevOps\\9.2 Deployment Pipeline\\TSI — DEPLOYMENT PIPELINE v1.0 MASTER.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_608b0faa.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 3 — AI ORCHESTRATION LAYER\\3.4 Vision Processing Agent\\TSI — VISION PROCESSING AGENT v1.0 MASTER.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_3b2d44bf.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 3 — AI ORCHESTRATION LAYER\\3.1 MCP   ADA Agent Structure\\TSI — MCP   ADA AGENT STRUCTURE v1.0 MASTER.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_edfe42ef.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 3 — AI ORCHESTRATION LAYER\\3.2 SAI Orchestration Nodes\\TSI — SAI ORCHESTRATION NODES.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_1e4de803.lnk",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 05 - Foundational Strategy Stack\\TSI-OS 05-06 — SAI-COM (SaaS Framework) Architecture (v1.0 MASTER)\\Folder 3 — AI ORCHESTRATION LAYER\\3.5 IMS Compliance Agent\\TSI — IMS COMPLIANCE AGENT v1.0 MASTER.gdoc.lnk",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    }
+  ],
+  "note": "EXECUTE mode. Logic implemented."
+}

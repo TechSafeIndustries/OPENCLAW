@@ -88,15 +88,49 @@ function peekCsv(filePath, n) {
 }
 
 /** Resolve a batch_id or filename to an absolute path under BATCH_DIR. */
-function resolveBatchPath(batchArg) {
-    // If it's already an absolute path and exists, use it directly
+function resolveBatchPath(batchArg, isDryRun) {
+    // 1. Handle missing/boolean case
+    if (batchArg === true || !batchArg) {
+        if (isDryRun) {
+            // Auto-select latest batch matching Batch_MIGRATE_1._Corporate_*.csv
+            if (!fs.existsSync(BATCH_DIR)) return null;
+            const files = fs.readdirSync(BATCH_DIR)
+                .filter(f => f.startsWith('Batch_MIGRATE_1._Corporate_') && f.endsWith('.csv'))
+                .map(f => {
+                    const full = path.join(BATCH_DIR, f);
+                    return { name: f, path: full, mtime: fs.statSync(full).mtime };
+                })
+                .sort((a, b) => b.mtime - a.mtime);
+
+            if (files.length > 0) {
+                console.log(`Auto-selected latest batch: ${files[0].name}`);
+                return files[0].path;
+            }
+            return null;
+        } else {
+            return null;
+        }
+    }
+
+    if (typeof batchArg !== 'string') return null;
+
+    // 2. Full absolute path
     if (path.isAbsolute(batchArg) && fs.existsSync(batchArg)) return batchArg;
 
-    // Try as a filename directly
+    // 3. Relative path under repo
+    const repoRel = path.resolve(ROOT, batchArg);
+    if (fs.existsSync(repoRel)) return repoRel;
+
+    // 4. Filename with or without .csv under BATCH_DIR
     const direct = path.join(BATCH_DIR, batchArg);
     if (fs.existsSync(direct)) return direct;
 
-    // Try as a batch_id prefix match (e.g. "high_2026-02-24_18-48-47")
+    if (!batchArg.toLowerCase().endsWith('.csv')) {
+        const withCsv = path.join(BATCH_DIR, batchArg + '.csv');
+        if (fs.existsSync(withCsv)) return withCsv;
+    }
+
+    // 5. Existing fuzzy search fallback
     const entries = fs.existsSync(BATCH_DIR) ? fs.readdirSync(BATCH_DIR) : [];
     const match = entries.find(f =>
         f.includes(batchArg) && f.endsWith('.csv') && f.startsWith('MoveBatch_')
@@ -109,14 +143,39 @@ function resolveBatchPath(batchArg) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 function main() {
-    const args = parseArgs(process.argv.slice(2));
+    const rawArgs = parseArgs(process.argv.slice(2));
+    const isDryRun = !!rawArgs.dryrun;
+
+    // ── Batch resolution ──────────────────────────────────────────────────────
+    const batchArg = rawArgs.batch;
+    if ((batchArg === true || !batchArg) && !isDryRun) {
+        console.error('Batch path missing. Use --batch <fullpath-or-filename.csv>');
+        process.exit(10);
+    }
+
+    const batchPath = resolveBatchPath(batchArg, isDryRun);
+    if (!batchPath) {
+        if (batchArg && batchArg !== true) {
+            console.error(`FAIL: Batch not found under ${BATCH_DIR}`);
+            console.error(`      Searched for: ${batchArg}`);
+            console.error(`      Available batches:`);
+            if (fs.existsSync(BATCH_DIR)) {
+                fs.readdirSync(BATCH_DIR)
+                    .filter(f => f.startsWith('MoveBatch_') && f.endsWith('.csv'))
+                    .forEach(f => console.error(`        ${f}`));
+            }
+            process.exit(1);
+        } else {
+            console.error('No batch files found for auto-selection.');
+            process.exit(1);
+        }
+    }
 
     // ── Required args ─────────────────────────────────────────────────────────
     const errors = [];
-    if (!args.batch) errors.push('--batch is required (batch_id or filename)');
-    if (!args.decision) errors.push('--decision is required (approve|reject)');
-    if (!args.reason) errors.push('--reason is required');
-    if (!args.owner) errors.push('--owner is required');
+    if (!rawArgs.decision) errors.push('--decision is required (approve|reject)');
+    if (!rawArgs.reason) errors.push('--reason is required');
+    if (!rawArgs.owner) errors.push('--owner is required');
 
     if (errors.length) {
         console.error('VALIDATION ERRORS:');
@@ -127,29 +186,15 @@ function main() {
     }
 
     // ── Validate decision enum ────────────────────────────────────────────────
-    const decision = args.decision.toLowerCase();
+    const decision = rawArgs.decision.toLowerCase();
     if (!['approve', 'reject'].includes(decision)) {
-        console.error(`FAIL: --decision must be "approve" or "reject", got "${args.decision}"`);
-        process.exit(1);
-    }
-
-    // ── Resolve batch path ────────────────────────────────────────────────────
-    const batchPath = resolveBatchPath(args.batch);
-    if (!batchPath) {
-        console.error(`FAIL: Batch not found under ${BATCH_DIR}`);
-        console.error(`      Searched for: ${args.batch}`);
-        console.error(`      Available batches:`);
-        if (fs.existsSync(BATCH_DIR)) {
-            fs.readdirSync(BATCH_DIR)
-                .filter(f => f.startsWith('MoveBatch_') && f.endsWith('.csv'))
-                .forEach(f => console.error(`        ${f}`));
-        }
+        console.error(`FAIL: --decision must be "approve" or "reject", got "${rawArgs.decision}"`);
         process.exit(1);
     }
 
     const batchRef = path.basename(batchPath, '.csv');
-    const owner = args.owner;
-    const reason = args.reason;
+    const owner = rawArgs.owner;
+    const reason = rawArgs.reason;
     const status = decision === 'approve' ? 'APPROVED' : 'REJECTED';
 
     // ── Peek first 5 rows for summary ─────────────────────────────────────────
@@ -193,8 +238,8 @@ function main() {
     }
 
     const now = nowIso();
-    const sessionId = args['session-id'] || ('cdms_review_' + uuid());
-    const runId = args['run-id'] || ('cdms_run_' + uuid());
+    const sessionId = rawArgs['session-id'] || ('cdms_review_' + uuid());
+    const runId = rawArgs['run-id'] || ('cdms_run_' + uuid());
     const actionId = uuid();
     const decisionId = uuid();
 

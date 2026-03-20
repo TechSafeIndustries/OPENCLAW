@@ -1,0 +1,3 @@
+BatchId,SourceDrive,CurrentPath,CurrentName,CurrentType,ProposedTSI01Path,ProposedName,RenameReason,Confidence
+smoke_skip,,C:\Users\mikes\.gemini\antigravity\scratch\openclaw\stack\cdms_tmp\source,missing.txt,File,stack/cdms_tmp/target,missing.txt,Smoke skip,High
+smoke_skip,,C:\Users\mikes\.gemini\antigravity\scratch\openclaw\stack\cdms_tmp\source,file2.txt,File,stack/cdms_tmp/target,file2_moved.txt,Smoke skip,High

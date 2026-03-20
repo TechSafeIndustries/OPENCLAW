@@ -1,0 +1,161 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_low_2026-03-02_20-21-36",
+  "owner": "cos",
+  "executed_at": "2026-03-02T20:24:01.751Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//"
+  ],
+  "row_count": 10,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "5da05aa3-e3ec-460b-b17b-dcdf3d51d34c",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T20:23:37.240Z"
+  },
+  "results": [
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 02 - Governance Rules for AI Assistants\\TSI-OS 02-03 — Instruction Chain Hierarchy\\TSI-OS 02-03 — Instruction Chain Hierarchy.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_84b2608e.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-06 — Legal Documents Standard\\TSI-OS 03-06 — Legal Documents Standard (v1.0).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_b95a610b.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-04 — Approval Workflow\\TSI-OS 03-04 — Approval Workflow (v1.0).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_4ef468f5.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-07 — Versioning Format\\TSI-OS 03-07 — Versioning Format.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_efb0c7bb.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-01 — Naming Convention\\TSI-OS 03-01 — Naming Convention (v1.0).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_8a0f4fd4.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-03 — Document Types\\TSI-OS 03-03 — Document Types (v1.0).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_0208fafb.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-05 — Execution Only Documents\\TSI-OS 03-05 — Execution Only Documents (v1.0).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_b78775ef.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-08 — Disposal & Archive Rules\\TSI-OS 03-08 — Disposal & Archive Rules (v1.0).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_3ae6bcb2.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-02 — Folder Standard\\TSI-OS 03-02 — Folder Standard (v1.0).gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_679a34d4.gdoc",
+      "error": null
+    },
+    {
+      "ok": true,
+      "status": "OK",
+      "src": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\5. ERROR RECOVERY  ACP v3 RESTORE PROCEDURE\\ERROR RECOVERY  ACP v3 RESTORE PROCEDURE.gdoc",
+      "dst": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_f952b914.gdoc",
+      "error": null
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_84b2608e.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 02 - Governance Rules for AI Assistants\\TSI-OS 02-03 — Instruction Chain Hierarchy\\TSI-OS 02-03 — Instruction Chain Hierarchy.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_b95a610b.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-06 — Legal Documents Standard\\TSI-OS 03-06 — Legal Documents Standard (v1.0).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_4ef468f5.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-04 — Approval Workflow\\TSI-OS 03-04 — Approval Workflow (v1.0).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_efb0c7bb.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-07 — Versioning Format\\TSI-OS 03-07 — Versioning Format.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_8a0f4fd4.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-01 — Naming Convention\\TSI-OS 03-01 — Naming Convention (v1.0).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_0208fafb.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-03 — Document Types\\TSI-OS 03-03 — Document Types (v1.0).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_b78775ef.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-05 — Execution Only Documents\\TSI-OS 03-05 — Execution Only Documents (v1.0).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_3ae6bcb2.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-08 — Disposal & Archive Rules\\TSI-OS 03-08 — Disposal & Archive Rules (v1.0).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_679a34d4.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 03 - DocControl Standard Operating Procedure (v1)\\TSI-OS 03-02 — Folder Standard\\TSI-OS 03-02 — Folder Standard (v1.0).gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    },
+    {
+      "action": "MOVE",
+      "src": "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_f952b914.gdoc",
+      "dst": "G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 08 - ACP v3 (AI Continuity Protocol)\\5. ERROR RECOVERY  ACP v3 RESTORE PROCEDURE\\ERROR RECOVERY  ACP v3 RESTORE PROCEDURE.gdoc",
+      "reason": "Rollback of MoveBatch_low_2026-03-02_20-21-36"
+    }
+  ],
+  "note": "EXECUTE mode. Logic implemented."
+}

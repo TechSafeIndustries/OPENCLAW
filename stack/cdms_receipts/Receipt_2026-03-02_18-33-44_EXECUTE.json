@@ -1,0 +1,72 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_med_2026-03-02_18-28-23",
+  "owner": "cos",
+  "executed_at": "2026-03-02T18:33:44.529Z",
+  "allowlist_roots": [
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "C:/Users/mikes/.gemini/antigravity/scratch/openclaw/stack/cdms_tmp/",
+    "G:/Shared drives/1. Corporate/TSI - Corporate/",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G://Shared drives//TSI-01 DocControl.GOOGLE//",
+    "G:/Shared drives/1. Corporate/",
+    "G://Shared drives//1. Corporate//"
+  ],
+  "row_count": 6,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "c6d7c912-4695-48e7-ad78-b13deed030d9",
+    "approved_by": "cos",
+    "approval_ts": "2026-03-02T18:29:48.214Z"
+  },
+  "results": [
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 02 - Governance Rules for AI Assistants\\TSI-OS 02-04 — AI Agent Register.gsheet",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_5cd12b89.gsheet",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 07 - OS Change Log (Master)\\4. CHANGE LOG FORMAT (OS-07-A TEMPLATE)\\TSI-OS 07 — CHANGE LOG ENTRY (OFFICIAL) Template.gdoc",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_a4c169bc.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 07 - OS Change Log (Master)\\5. MASTER CHANGE REGISTER (OS-07-B)\\MASTER CHANGE REGISTER (OS-07-B).gdoc",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_1593aa5d.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 07 - OS Change Log (Master)\\1. SCOPE\\OS-07 Change Log Scope.gdoc",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_8d041ec2.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 01 - Master Control Index (MCI)\\OS-01-03  Division Leads\\TSI-OS 01-03 — Division Leads Register (v1.0).gdoc",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_243f7c26.gdoc",
+      "error": "Source path missing at execution time"
+    },
+    {
+      "ok": false,
+      "status": "SKIPPED_MISSING_SOURCE",
+      "src": "\\\\?\\G:\\Shared drives\\1. Corporate\\TSi — Corporate\\01. Corporate Governance\\TSI Operating System\\TSI-OS 01 - Master Control Index (MCI)\\OS-01-01  AI Behaviour & Instruction Register (for ChatGPT continuity)\\AI Behavior Register.gsheet",
+      "dst": "\\\\?\\G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\INCOMING\\TSI-SHORT_aca57a38.gsheet",
+      "error": "Source path missing at execution time"
+    }
+  ],
+  "rollback_plan": [],
+  "note": "EXECUTE mode. Logic implemented."
+}

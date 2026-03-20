@@ -1,0 +1,50 @@
+{
+  "mode": "EXECUTE",
+  "batch": "MoveBatch_smoke_test",
+  "owner": "cos",
+  "executed_at": "2026-02-27T10:34:40.510Z",
+  "allowlist_roots": [
+    "TSI-01 DocControl.GOOGLE/",
+    "stack/cdms_tmp/"
+  ],
+  "row_count": 2,
+  "stop_loss_triggered": false,
+  "gates_passed": true,
+  "gates": {
+    "batch_exists": true,
+    "max_batch_size": 10,
+    "allowlist_ok": true,
+    "approval_id": "37a3d6a6-0f83-499f-b3af-675d0908b3f8",
+    "approved_by": "cos",
+    "approval_ts": "2026-02-27T10:34:21.995Z"
+  },
+  "results": [
+    {
+      "ok": true,
+      "src": "stack/cdms_tmp/src/file1.txt",
+      "dst": "stack/cdms_tmp/dst/file1.txt",
+      "error": null
+    },
+    {
+      "ok": true,
+      "src": "stack/cdms_tmp/src/file2.txt",
+      "dst": "stack/cdms_tmp/dst/file2.txt",
+      "error": null
+    }
+  ],
+  "rollback_plan": [
+    {
+      "action": "MOVE",
+      "src": "stack/cdms_tmp/dst/file1.txt",
+      "dst": "stack/cdms_tmp/src/file1.txt",
+      "reason": "Rollback of MoveBatch_smoke_test"
+    },
+    {
+      "action": "MOVE",
+      "src": "stack/cdms_tmp/dst/file2.txt",
+      "dst": "stack/cdms_tmp/src/file2.txt",
+      "reason": "Rollback of MoveBatch_smoke_test"
+    }
+  ],
+  "note": "EXECUTE mode. Logic implemented."
+}

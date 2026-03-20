@@ -1,0 +1,3 @@
+CurrentPath,CurrentName,ProposedTSI01Path,ProposedName,Status,Error
+C:\Users\mikes\.gemini\antigravity\scratch\openclaw\stack\cdms_tmp\source,file4.txt,stack/cdms_tmp/target,file1_moved.txt,FAIL,Destination already exists (no overwrite)
+C:\Users\mikes\.gemini\antigravity\scratch\openclaw\stack\cdms_tmp\source,file4.txt,stack/cdms_tmp/target,file4_moved.txt,SKIPPED_STOP_LOSS,

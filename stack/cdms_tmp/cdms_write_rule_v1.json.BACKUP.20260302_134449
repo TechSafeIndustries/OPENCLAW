@@ -1,0 +1,21 @@
+{
+  "version": "v1",
+  "allowlistRoots": [
+    "G:\\Shared drives\\TSI-01 DocControl.GOOGLE\\",
+    "C:\\Users\\mikes\\.gemini\\antigravity\\scratch\\openclaw\\stack\\cdms_tmp\\",
+    "G:\\Shared drives\\1. Corporate\\TSI - Corporate\\",
+    "G:/Shared drives/TSI-01 DocControl.GOOGLE/",
+    "G:\\\\Shared drives\\\\TSI-01 DocControl.GOOGLE\\\\",
+    "G:/Shared drives/1. Corporate/",
+    "G:\\\\Shared drives\\\\1. Corporate\\\\"
+  ],
+  "maxBatchSize": 10,
+  "requireDryRun": true,
+  "requireHumanApproval": true,
+  "stopLoss": {
+    "maxFailures": 3,
+    "abortOnPermissionError": true,
+    "abortOnUnexpectedRoot": true
+  },
+  "auditRequired": true
+}\n

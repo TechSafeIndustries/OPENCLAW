@@ -1,0 +1,2 @@
+BatchId,SourceDrive,CurrentPath,CurrentName,CurrentType,ProposedTSI01Path,ProposedName,RenameReason,Confidence
+smoke_exec,,C:\Users\mikes\.gemini\antigravity\scratch\openclaw\stack\cdms_tmp\source,file1.txt,File,stack/cdms_tmp/target,file1_moved.txt,Smoke exec,High

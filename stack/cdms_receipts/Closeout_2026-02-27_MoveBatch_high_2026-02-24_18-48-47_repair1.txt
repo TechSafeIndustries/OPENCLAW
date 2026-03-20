@@ -1,0 +1,6 @@
+﻿Batch: MoveBatch_high_2026-02-24_18-48-47_repair1
+Outcome: DESTINATION CONFIRMED (manual/previous move). CDMS EXECUTE aborted due to missing source paths.
+Security & Access Control INCOMING contains: ACP v3 Security Policy; Security & Access Control (OS-07-F); Security & Continuity Rules (OS-06-C); Device Authentication Keys; Worker & Contractor Separation Model; Zero Trust & Role Segregation Model.
+Privacy INCOMING contains: Vision Image Privacy Controls; Canonical Privacy Policy (TSI-COR-POL-PRIVACY_POLICY-v1.0-20260227, Doc_ID TSI-COR-POL-0009).
+Privacy Archive contains: DATA PRIVACY RULES v1.0 MASTER (Superseded).
+Timestamp: 2026-02-28 00:38:22
